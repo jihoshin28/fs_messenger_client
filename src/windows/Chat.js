@@ -4,7 +4,7 @@ import socket from '../socket'
 
 
 
-let Chat = () => {
+let Chat = ({socket}) => {
 
     let [input, setInput] = useState('')
     let [roomId, setRoomId] = useState('')
