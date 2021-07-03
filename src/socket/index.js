@@ -1,16 +1,13 @@
 
 import {randomUserName} from '../api'
-
+import {io} from 'socket.io-client'
 // this is the socket manager variable for creating emit events and listeners on client side 
-const socketConnection = (io, key, username) => {
-    return io('http://localhost:3000', {
-        query: {
-            key: key,
-            username: username
-        }
-    })
-    
-}
+const socket = io('http://localhost:3000', {
+    query: {
+        key: 1,
+        username: randomUserName()
+    }
+})
 
-export default socketConnection
+export default socket
 

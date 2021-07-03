@@ -2,9 +2,7 @@ import React, { useState, useEffect, useRef} from 'react';
 import {v4 as uuidv4} from 'uuid'
 import socket from '../socket'
 
-
-
-let Chat = ({socket}) => {
+let ChatWindow = () => {
 
     let [input, setInput] = useState('')
     let [roomId, setRoomId] = useState('')
@@ -73,4 +71,4 @@ let Chat = ({socket}) => {
 
 }
 
-export default Chat 
+export default ChatWindow

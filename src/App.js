@@ -1,6 +1,8 @@
 import './App.css';
-import Chat from './windows/Chat'
-import Homepage from './windows/Homepage'
+import ChatWindow from './pages/ChatWindow'
+import Homepage from './pages/Homepage'
+import ChatRooms from './pages/ChatRooms'
+import CreateChat from './pages/CreateChat'
 import {
   BrowserRouter as Router, 
   Switch,
@@ -62,7 +64,7 @@ function App() {
             <Homepage socket = {connection}/>
           </Route>
           <Route exact path="/chat">
-            <Chat socket = {connection}/>
+            <ChatWindow socket = {connection}/>
           </Route>
         </Switch>
       </Router>
