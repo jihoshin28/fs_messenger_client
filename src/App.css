@@ -119,8 +119,10 @@ body {
 }
 
 .read-receipt {
-  margin-left: 2%;
   width: 10px;
+  height: 10px;
+  background-color: rgba(5, 88, 126, 0.842);
+  border-radius: 50%;
 }
 
 .read-receipt-div {

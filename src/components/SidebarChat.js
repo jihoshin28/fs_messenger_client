@@ -25,7 +25,8 @@ const SidebarChat = ({name, focus, onFocus}) => {
                 </div>
             </div>
             <div class = "read-receipt-div">
-                <img class = "read-receipt" src = "https://www.playworks.org/wp-content/uploads/2018/09/blue-dot.jpeg"/>
+                <div class = "read-receipt">
+                </div>
             </div>
 
         </div>
