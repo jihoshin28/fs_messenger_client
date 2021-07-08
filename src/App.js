@@ -1,6 +1,5 @@
 import './App.css';
 import ChatWindow from './windows/ChatWindow'
-import Homepage from './windows/Homepage'
 import ChatRooms from './windows/ChatRooms'
 import CreateChat from './windows/CreateChat'
 import Sidebar from './windows/Sidebar'
@@ -61,9 +60,6 @@ function App() {
           <Navbar/>
           <Switch>
             <Route exact path="/" >
-              <Homepage/>
-            </Route>
-            <Route exact path="/chat">
               <ChatWindow/>
             </Route>
             <Route exact path ="/chat_rooms">

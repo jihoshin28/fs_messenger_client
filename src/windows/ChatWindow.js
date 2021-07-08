@@ -1,9 +1,7 @@
-import React, { useState, useEffect, useRef} from 'react';
-import SidebarChat from '../components/SidebarChat'
-
+import React, { useState, useEffect, useRef } from 'react';
 import socket from '../socket'
 
-let ChatWindow = () => {
+const ChatWindow = () => {
 
     let [input, setInput] = useState('')
     let [roomId, setRoomId] = useState('')
@@ -44,24 +42,25 @@ let ChatWindow = () => {
         console.log(data)
         let messages = ref.current
         console.log(ref, messages)
-        let item = document.createElement('li')
+        let item = document.createElement('div')
         item.textContent = `${data.username} - ${data.message}`;
         messages.appendChild(item);
-        // window.scrollTo(0, document.body.scrollHeight);
+        window.scrollTo(0, ref.current.scrollHeight);
+        console.log(ref.current.scrollHeight)
     }
 
-    return (
-        <div class = "chat-section">
-           
-                <ul ref = {ref} id="messages">
-                    
-                </ul>
-            <form id="form" action="" onSubmit = {(e) => sendMessage(e)}>
-                <input value = {input} onChange = {(e) => onChange(e)} id="input" autoComplete="off" /><button>Send</button>
-            </form>
-        </div>
-    );
 
+        return (
+            <div class = "chat-section">
+                <div ref = {ref} id = "chat-box">
+
+                </div>
+                
+                <form id="form" action="" onSubmit = {(e) => sendMessage(e)}>
+                    <input value = {input} onChange = {(e) => onChange(e)} id="input" autoComplete="off" /><button>Send</button>
+                </form>
+            </div>
+        )
 }
 
-export default ChatWindow
+export default ChatWindow;
