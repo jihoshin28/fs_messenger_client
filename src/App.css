@@ -66,7 +66,7 @@ body {
 .chat-window {
   position: fixed;
   height: 100%;
-  width: 75%;
+  width: 70%;
   left: 30%;
 }
 
@@ -91,8 +91,11 @@ body {
   height: 100px;
   align-items: center;
   width:100%;
-  box-shadow: 1px 1px 2px 2px gray;
   padding: 30px;
+}
+
+.sidebar-section-focus {
+  background-color: gray;
 }
 
 .sidebar-nav {

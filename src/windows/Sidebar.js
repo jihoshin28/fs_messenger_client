@@ -1,8 +1,26 @@
-import React from 'react'
+import React, {useState} from 'react'
 import SidebarChat from '../components/SidebarChat'
 
+let nameList = ['Allen Shin', 'Jane Shin', 'Anna Shin', 'Joon Shin', 'Uncle', 'Aunt', 'Michael Peralez', 'Josh Chang', 'Jisung Park', 'Zack Epp', 'David Lee', 'Mark Heyder']
 
 const Sidebar = () => {
+
+    let [name, setName] = useState('')
+
+    let onFocus = (name) => {
+        setName(name)
+    }
+    
+    let renderSidebarChats = () => {
+        return nameList.map((item, index) => {
+            if(item === name){
+                return <SidebarChat key = {index} name = {item} focus = {true} onFocus = {onFocus}/>
+            } else {
+                return <SidebarChat key = {index} name = {item} focus = {false} onFocus = {onFocus}/>
+            }
+        })
+    }
+
     return(
         <div class = "sidebar">
             <nav class="sticky-nav navbar navbar-expand-lg navbar-light bg-light">
@@ -16,24 +34,7 @@ const Sidebar = () => {
                 </div>
             </nav>
             <div class = "sidebar-chat">
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
-
-                <SidebarChat/>
-
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
-                <SidebarChat/>
+                {renderSidebarChats()}
 
             </div>
         </div>
