@@ -49,13 +49,8 @@ let ChatWindow = () => {
         window.scrollTo(0, document.body.scrollHeight);
     }
 
-    let checkRooms = () => {
-        socket.emit('rooms')
-    }
-
     return (
-        <div>
-            <button onClick = {() => checkRooms()}>Check rooms in user</button>
+        <div class = "chat-window">
             <ul ref = {ref} id="messages">
                 
             </ul>

@@ -10,7 +10,7 @@ body {
   padding: 0.25rem;
   position: fixed;
   bottom: 0;
-  left: 0;
+  left: 20%;
   right: 0;
   display: flex;
   height: 3rem;
@@ -61,4 +61,23 @@ body {
 .form-select {
   margin: 1% 0 0 1%;
   width: 98%;
+}
+
+.sidebar {
+  height: 100%; /* Full-height: remove this if you want "auto" height */
+  width: 20%; /* Set the width of the sidebar */
+  position: fixed; /* Fixed Sidebar (stay in place on scroll) */
+  z-index: 1; /* Stay on top */
+  top: 0; /* Stay at the top */
+  left: 0;
+  background-color: #111; /* Black */
+  overflow-x: hidden; /* Disable horizontal scroll */
+  padding-top: 20px; 
+}
+
+.chat-window {
+  position: fixed;
+  height: 100%;
+  width: 80%;
+  left: 20%;
 }

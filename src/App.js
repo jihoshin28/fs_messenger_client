@@ -1,8 +1,9 @@
 import './App.css';
-import ChatWindow from './pages/ChatWindow'
-import Homepage from './pages/Homepage'
-import ChatRooms from './pages/ChatRooms'
-import CreateChat from './pages/CreateChat'
+import ChatWindow from './windows/ChatWindow'
+import Homepage from './windows/Homepage'
+import ChatRooms from './windows/ChatRooms'
+import CreateChat from './windows/CreateChat'
+import Sidebar from './windows/Sidebar'
 import {
   BrowserRouter as Router, 
   Switch,
@@ -24,7 +25,7 @@ function App() {
   const[username, setUsername] = useState('')
 
   useEffect(() => {
-
+    
     let id = 1
     socket.emit('join room', id)
     
@@ -54,23 +55,26 @@ function App() {
 
   return (
     <div className="App">
-      <Router>
-        <Navbar/>
-        <Switch>
-          <Route exact path="/" >
-            <Homepage/>
-          </Route>
-          <Route exact path="/chat">
-            <ChatWindow/>
-          </Route>
-          <Route exact path ="/chat_rooms">
-            <ChatRooms />
-          </Route>
-          <Route exact path ="/create_chat">
-            <CreateChat />
-          </Route>
-        </Switch>
-      </Router>
+      <div class = 'chat-window'>
+        <Sidebar/>
+        <Router>
+          <Navbar/>
+          <Switch>
+            <Route exact path="/" >
+              <Homepage/>
+            </Route>
+            <Route exact path="/chat">
+              <ChatWindow/>
+            </Route>
+            <Route exact path ="/chat_rooms">
+              <ChatRooms />
+            </Route>
+            <Route exact path ="/create_chat">
+              <CreateChat />
+            </Route>
+          </Switch>
+        </Router>
+      </div>
     </div>
   );
 }
