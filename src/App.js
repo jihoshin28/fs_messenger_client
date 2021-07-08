@@ -55,8 +55,8 @@ function App() {
 
   return (
     <div className="App">
-      <div class = 'chat-window'>
         <Sidebar/>
+        <div class = 'chat-window'>
         <Router>
           <Navbar/>
           <Switch>

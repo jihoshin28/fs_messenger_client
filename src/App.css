@@ -39,11 +39,17 @@ body {
 
 #messages {
   list-style-type: none;
+  width: 100%;
   margin: 0;
   padding: 0;
+  max-height:100vw;
+  overflow-y:scroll;/*Also...*/
+  overflow-x:hidden; 
 }
 #messages > li {
+  width: 100%;
   padding: 0.5rem 1rem;
+  margin-right: -1rem;
 }
 #messages > li:nth-child(odd) {
   background: #efefef;
@@ -64,7 +70,7 @@ body {
 }
 
 .chat-window {
-  position: fixed;
+  position: absolute;
   height: 100%;
   width: 70%;
   left: 30%;
@@ -83,7 +89,8 @@ body {
   left: 0;
   background-color: #fff; /* Black */
   overflow-x: hidden; /* Disable horizontal scroll */
-  box-shadow: 1px 0px 2px 2px gray;
+  /* box-shadow: 1px 0px 2px 2px gray; */
+  border-left: 1px solid black
 }
 
 .sidebar-section {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef} from 'react';
+import SidebarChat from '../components/SidebarChat'
 
 import socket from '../socket'
 
@@ -42,18 +43,19 @@ let ChatWindow = () => {
     let createNewMessage = (data) => {
         console.log(data)
         let messages = ref.current
-        console.log(messages)
+        console.log(ref, messages)
         let item = document.createElement('li')
         item.textContent = `${data.username} - ${data.message}`;
         messages.appendChild(item);
-        window.scrollTo(0, document.body.scrollHeight);
+        // window.scrollTo(0, document.body.scrollHeight);
     }
 
     return (
-        <div class = "chat-window">
-            <ul ref = {ref} id="messages">
-                
-            </ul>
+        <div class = "chat-section">
+           
+                <ul ref = {ref} id="messages">
+                    
+                </ul>
             <form id="form" action="" onSubmit = {(e) => sendMessage(e)}>
                 <input value = {input} onChange = {(e) => onChange(e)} id="input" autoComplete="off" /><button>Send</button>
             </form>

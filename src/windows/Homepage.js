@@ -8,12 +8,12 @@ class Homepage extends Component {
     }
     render() {
         return (
-            <div class = "container">
-                <div class = "row">
-                    <div class = "chat-box col-9">
+            <div>
+                
+                    <div class = "chat-box">
                         <ChatWindow/>
                     </div> 
-                </div>
+                
             </div>
         );
     }
