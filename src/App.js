@@ -10,8 +10,7 @@ import {
 } from 'react-router-dom'
 import Navbar from './containers/Navbar'
 import {useEffect, useState} from 'react'
-import socketConnection from './socket'
-import { io } from 'socket.io-client'
+import socket from './socket'
 
 // const newConnection = new Connection(io, 'allen', 'http://localhost:3000', '/user1', '/path1')
 // let socket = socketConnection
@@ -23,19 +22,17 @@ import { io } from 'socket.io-client'
 function App() {
   
   const[username, setUsername] = useState('')
-  const [connection, setConnection] = useState({})
 
   useEffect(() => {
 
-    let socket = io('http://localhost:3000', {
-      query: {
-          key: 1,
-          username: 'allen'
-      }
+    let id = 1
+    socket.emit('join room', id)
+    
+    // setConnection(socket)
+    socket.on('rooms',(data) => {
+      console.log(data)
     })
-
-    setConnection(socket)
-
+    
 
     socket.on('connect', () => {
       console.log(socket.id)
@@ -58,13 +55,19 @@ function App() {
   return (
     <div className="App">
       <Router>
-        <Navbar />
+        <Navbar/>
         <Switch>
           <Route exact path="/" >
-            <Homepage socket = {connection}/>
+            <Homepage/>
           </Route>
           <Route exact path="/chat">
-            <ChatWindow socket = {connection}/>
+            <ChatWindow/>
+          </Route>
+          <Route exact path ="/chat_rooms">
+            <ChatRooms />
+          </Route>
+          <Route exact path ="/create_chat">
+            <CreateChat />
           </Route>
         </Switch>
       </Router>

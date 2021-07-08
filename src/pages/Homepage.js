@@ -9,7 +9,7 @@ class Homepage extends Component {
             <div>
                 <h1>Homepage</h1>
                 <div>
-                    <button onClick = {() => this.createChatRoom()}>Create new chat</button>
+                    
                 </div>
             </div>
         );

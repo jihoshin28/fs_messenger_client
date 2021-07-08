@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef} from 'react';
-import {v4 as uuidv4} from 'uuid'
+
 import socket from '../socket'
 
 let ChatWindow = () => {
@@ -9,17 +9,14 @@ let ChatWindow = () => {
     let ref = useRef()
 
     useEffect(() => {
-        let id = uuidv4()
-        console.log(id)
+        let id = 1
         setRoomId(id)
         socket.emit('join room', id)
         socket.on('chat message', (data) => {
             console.log(data)
             createNewMessage(data)
         })
-        socket.on('rooms', (data) => {
-            console.log(data)
-        })
+        socket.emit('rooms')
         socket.on('notification', (data) => {
             console.log(data)
         })  
@@ -31,7 +28,6 @@ let ChatWindow = () => {
     let onChange = (e) => {
         setInput(e.target.value)
     }
-
 
     let sendMessage = (e) => {
         e.preventDefault()
@@ -54,7 +50,7 @@ let ChatWindow = () => {
     }
 
     let checkRooms = () => {
-        socket.emit('rooms', roomId)
+        socket.emit('rooms')
     }
 
     return (
