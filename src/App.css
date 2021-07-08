@@ -48,3 +48,17 @@ body {
 #messages > li:nth-child(odd) {
   background: #efefef;
 }
+
+.dropdown-menu {
+  height: 80vh;
+  width: 80vw;
+}
+
+.create-chat-div {
+  padding: 3%;
+}
+
+.form-select {
+  margin: 1% 0 0 1%;
+  width: 98%;
+}
