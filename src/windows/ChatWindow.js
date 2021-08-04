@@ -52,7 +52,7 @@ const ChatWindow = () => {
 
         return (
             <div class = "chat-section">
-                <div ref = {ref} id = "chat-box">
+                <div ref = {ref} class = "chat-box">
 
                 </div>
                 

@@ -37,7 +37,7 @@ body {
   color: #fff;
 }
 
-#chat-box {
+.chat-box {
   list-style-type: none;
   width: 100%;
   margin: 0;
@@ -46,11 +46,11 @@ body {
   overflow-y:hidden;
   margin-bottom: 3rem;
 }
-#chat-box > div {
+.chat-box > div {
   width: 100%;
   padding: 0.5rem 1rem;
 }
-#chat-box > div:nth-child(odd) {
+.chat-box > div:nth-child(odd) {
   background: #efefef;
 }
 
@@ -100,7 +100,7 @@ body {
 }
 
 .sidebar-section-focus {
-  background-color: gray;
+  background-color: rgb(168, 168, 168);
 }
 
 .sidebar-nav {
