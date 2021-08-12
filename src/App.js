@@ -11,6 +11,7 @@ import {
 import Navbar from './containers/Navbar'
 import {useEffect, useState} from 'react'
 import socket from './socket'
+import {getUserByEmail, getUserChatMessages} from './api'
 
 // const newConnection = new Connection(io, 'allen', 'http://localhost:3000', '/user1', '/path1')
 // let socket = socketConnection
@@ -22,11 +23,28 @@ import socket from './socket'
 function App() {
   
   const[username, setUsername] = useState('')
+  const[chats, setChats] = useState([])
 
-  useEffect(() => {
-    
-    let id = 1
-    socket.emit('join room', id)
+  useEffect(async() => {
+    let user = await getUserByEmail('Edmund.OConnell13@hotmail.com')
+    let chat_ids = user.data.user[0].chats
+    let chat_calls = chat_ids.map((chat_id) => {
+      return getUserChatMessages(chat_id)
+    })
+    console.log(chat_calls)
+    Promise.all(chat_calls).then((chat_data) => {
+      setChats(chat_data)
+    })
+    // when socket connects join all chats that socket belongs to
+
+    socket.emit('join rooms', 
+      { 
+        user_id: user.id, 
+        username: user.username,
+        email: user.email, 
+        chat_ids: chats
+      }
+    )
     
     // setConnection(socket)
     socket.on('rooms',(data) => {
@@ -49,9 +67,9 @@ function App() {
     //     console.log(data)
     // })  
     
-}, [])
+  }, [])
 
-
+  console.log(chats)
   return (
     <div className="App">
         <Sidebar/>
