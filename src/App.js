@@ -1,8 +1,7 @@
 import './App.css';
 import ChatWindow from './windows/ChatWindow'
-import ChatRooms from './windows/ChatRooms'
 import CreateChat from './windows/CreateChat'
-import Sidebar from './windows/Sidebar'
+import Sidebar from './containers/Sidebar'
 import {
   BrowserRouter as Router, 
   Switch,
@@ -72,23 +71,23 @@ function App() {
   console.log(chats)
   return (
     <div className="App">
+        <Router>
         <Sidebar/>
         <div class = 'chat-window'>
-        <Router>
           <Navbar/>
           <Switch>
             <Route exact path="/" >
               <ChatWindow/>
             </Route>
-            <Route exact path ="/chat_rooms">
-              <ChatRooms />
+            <Route exact path="/chat" >
+              <ChatWindow/>
             </Route>
             <Route exact path ="/create_chat">
               <CreateChat />
             </Route>
           </Switch>
-        </Router>
       </div>
+        </Router>
     </div>
   );
 }

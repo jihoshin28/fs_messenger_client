@@ -1,4 +1,5 @@
 import React, {useState} from 'react'
+import { Link } from 'react-router-dom'
 import SidebarChat from '../components/SidebarChat'
 
 let nameList = ['Allen Shin', 'Jane Shin', 'Anna Shin', 'Joon Shin', 'Uncle', 'Aunt', 'Michael Peralez', 'Josh Chang', 'Jisung Park', 'Zack Epp', 'David Lee', 'Mark Heyder']
@@ -27,9 +28,10 @@ const Sidebar = () => {
                 <div class="container-fluid">
                     <div class="sidebar-nav">
                         <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
-                        <button class="btn btn-primary" type="submit">
+                        <Link class="btn btn-primary" to = "/create_chat">
                             +
-                        </button>
+                        </Link>
+                      
                     </div>
                 </div>
             </nav>
