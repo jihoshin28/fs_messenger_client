@@ -147,3 +147,11 @@ body {
   flex-flow: column;
 }
 
+.btn-center{
+  width: 25%;
+}
+
+.center-div{
+  display:flex;
+  justify-content: center;
+}

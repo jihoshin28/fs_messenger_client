@@ -4,7 +4,7 @@ import SidebarChat from '../components/SidebarChat'
 
 let nameList = ['Allen Shin', 'Jane Shin', 'Anna Shin', 'Joon Shin', 'Uncle', 'Aunt', 'Michael Peralez', 'Josh Chang', 'Jisung Park', 'Zack Epp', 'David Lee', 'Mark Heyder']
 
-const Sidebar = () => {
+const Sidebar = ({chats}) => {
 
     let [name, setName] = useState('')
 
@@ -27,7 +27,7 @@ const Sidebar = () => {
             <nav class="sticky-nav navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                     <div class="sidebar-nav">
-                        <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search"/>
+                        <input class="form-control me-2" type="search" placeholder="Search People" aria-label="Search"/>
                         <Link class="btn btn-primary" to = "/create_chat">
                             +
                         </Link>

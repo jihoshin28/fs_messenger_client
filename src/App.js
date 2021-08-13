@@ -10,7 +10,7 @@ import {
 import Navbar from './containers/Navbar'
 import {useEffect, useState} from 'react'
 import socket from './socket'
-import {getUserByEmail, getUserChatMessages} from './api'
+import {getUsers, getUserByEmail, getUserChatMessages} from './api'
 
 // const newConnection = new Connection(io, 'allen', 'http://localhost:3000', '/user1', '/path1')
 // let socket = socketConnection
@@ -20,14 +20,16 @@ import {getUserByEmail, getUserChatMessages} from './api'
 // let socket2 = newConnection2.socket()
 
 function App() {
-  
-  const[username, setUsername] = useState('')
+  const[users, setUsers] = useState([])
+  const[user, setUser] = useState({})
   const[chats, setChats] = useState([])
 
   useEffect(async() => {
-    let user = await getUserByEmail('Edmund.OConnell13@hotmail.com')
-    let chat_ids = user.data.user[0].chats
-    let chat_calls = chat_ids.map((chat_id) => {
+    let users = await getUsers() 
+    setUsers(users.data)
+    let user_data = await getUserByEmail('Edmund.OConnell13@hotmail.com')
+    setUser(user_data.data.user[0])
+    let chat_calls = user_data.data.user[0].chats.map((chat_id) => {
       return getUserChatMessages(chat_id)
     })
     console.log(chat_calls)
@@ -68,7 +70,7 @@ function App() {
     
   }, [])
 
-  console.log(chats)
+  console.log(users, chats, user, 'initial data')
   return (
     <div className="App">
         <Router>
@@ -83,7 +85,7 @@ function App() {
               <ChatWindow/>
             </Route>
             <Route exact path ="/create_chat">
-              <CreateChat />
+              <CreateChat users = {users} chats = {chats} setChats = {setChats}/>
             </Route>
           </Switch>
       </div>
