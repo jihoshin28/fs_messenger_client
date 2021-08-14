@@ -34,7 +34,7 @@ export const addFriend = async(id, data) => {
 // CHAT METHODS
 
 // when app loads get all of users chat data
-export const getUserChatMessages = async(chat_id) => {
+export const getChat = async(chat_id) => {
     const result = await express.get(`/chats/${chat_id}`)
     return result.data.chat[0]
 }

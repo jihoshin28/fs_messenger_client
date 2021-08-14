@@ -1,5 +1,5 @@
 import React,{useState, useEffect} from 'react'
-import { createNewChat } from '../api'
+import { createNewChat, getChat } from '../api'
 
 const CreateChat = ({users, chats, setChats}) => {
     let [chatUserIds, setChatUserIds] = useState([])
@@ -13,6 +13,8 @@ const CreateChat = ({users, chats, setChats}) => {
 
     let createChat = async() => {
         let result = await createNewChat(chatUserIds)
+        let new_chat = await getChat(result.data.newChat._id)
+        console.log(new_chat)
         setChats([...chats, result.data.newChat])
         setChatUserIds([])
     }

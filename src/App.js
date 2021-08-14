@@ -10,7 +10,7 @@ import {
 import Navbar from './containers/Navbar'
 import {useEffect, useState} from 'react'
 import socket from './socket'
-import {getUsers, getUserByEmail, getUserChatMessages} from './api'
+import {getUsers, getUserByEmail, getChat} from './api'
 
 // const newConnection = new Connection(io, 'allen', 'http://localhost:3000', '/user1', '/path1')
 // let socket = socketConnection
@@ -27,12 +27,18 @@ function App() {
   useEffect(async() => {
     let users = await getUsers() 
     setUsers(users.data)
-    let user_data = await getUserByEmail('Edmund.OConnell13@hotmail.com')
-    setUser(user_data.data.user[0])
-    let chat_calls = user_data.data.user[0].chats.map((chat_id) => {
-      return getUserChatMessages(chat_id)
+    console.log(users)
+    // get specific user based on email address at login
+    // let current_user = await getUserByEmail('Edmund.OConnell13@hotmail.com')
+    // setUser(current_user.data.user[0])
+    let current_user = users.data[0]
+    setUser(current_user)
+    console.log(current_user)
+
+    let chat_calls = current_user.chats.map((chat_id) => {
+      return getChat(chat_id)
     })
-    console.log(chat_calls)
+    // console.log(chat_calls)
     Promise.all(chat_calls).then((chat_data) => {
       setChats(chat_data)
     })
