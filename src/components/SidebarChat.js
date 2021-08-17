@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react'
 
-const SidebarChat = ({name, focus, onFocus}) => {
+const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
     let ref = React.useRef()
 
     useEffect(() => {
@@ -10,9 +10,11 @@ const SidebarChat = ({name, focus, onFocus}) => {
             ref.current.classList.remove("sidebar-section-focus")
         }
     }, [focus])
+
     let focusChat = () => {
-        onFocus(name)
+        onFocus(chat_id)
     }
+    
     return(
         <div ref = {ref} onClick = {focusChat}class = 'sidebar-section'>
             <div class = "sidebar-img-div">
@@ -20,7 +22,7 @@ const SidebarChat = ({name, focus, onFocus}) => {
             </div>
             <div class = "col-8">
                 <div class = "sidebar-content">
-                    <h5>{name}</h5>
+                    <h5>{}</h5>
                     <h6>Previous Message</h6>
                 </div>
             </div>

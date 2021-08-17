@@ -6,18 +6,20 @@ let nameList = ['Allen Shin', 'Jane Shin', 'Anna Shin', 'Joon Shin', 'Uncle', 'A
 
 const Sidebar = ({chats}) => {
 
-    let [name, setName] = useState('')
+    let [chat_id, setChatId] = useState('')
 
-    let onFocus = (name) => {
-        setName(name)
+    let onFocus = (chat_id) => {
+        console.log(chat_id)
+        setChatId(chat_id)
     }
     
     let renderSidebarChats = () => {
-        return nameList.map((item, index) => {
-            if(item === name){
-                return <SidebarChat key = {index} name = {item} focus = {true} onFocus = {onFocus}/>
+        console.log(chats)
+        return chats.map((chat, index) => {
+            if(chat._id === chat_id){
+                return <SidebarChat key = {index} chat_id = {chat._id} users = {chat.users} messages = {chat.messages} focus = {true} onFocus = {onFocus}/>
             } else {
-                return <SidebarChat key = {index} name = {item} focus = {false} onFocus = {onFocus}/>
+                return <SidebarChat key = {index} chat_id = {chat._id} users = {chat.users} messages = {chat.messages} focus = {false} onFocus = {onFocus}/>
             }
         })
     }

@@ -87,7 +87,7 @@ function App() {
   return (
     <div className="App">
         <Router>
-        <Sidebar/>
+        <Sidebar chats = {chats}/>
         <div class = 'chat-window'>
           <Navbar/>
           <Switch>
