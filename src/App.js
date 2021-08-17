@@ -25,26 +25,33 @@ function App() {
   const[chats, setChats] = useState([])
 
   useEffect(async() => {
+
+    // On log in: 
+
+    // 1) get all Users
     let users = await getUsers() 
     setUsers(users.data)
     console.log(users)
     // get specific user based on email address at login
     // let current_user = await getUserByEmail('Edmund.OConnell13@hotmail.com')
     // setUser(current_user.data.user[0])
+    
+    // 2) get the logged in User
     let current_user = users.data[0]
     setUser(current_user)
-    console.log(current_user)
 
+    // 3) get all the chats with chat_ids in the user chats array
     let chat_calls = current_user.chats.map((chat_id) => {
       return getChat(chat_id)
     })
-    // console.log(chat_calls)
+    // once all the promises resolve then set state
     Promise.all(chat_calls).then((chat_data) => {
       setChats(chat_data)
     })
-    // when socket connects join all chats that socket belongs to
 
-    socket.emit('join rooms', 
+    // create on login emit with call after getting all api calls 
+
+    socket.emit('on login', 
       { 
         user_id: user.id, 
         username: user.username,

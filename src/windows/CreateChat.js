@@ -8,7 +8,13 @@ const CreateChat = ({users, chats, setChats}) => {
     }, [])
     
     let addUser = (newUserId) => {
-        setChatUserIds([...chatUserIds, newUserId])
+        let userAdded = !!chatUserIds.find((id) => newUserId === id)
+        if(userAdded){
+            return 
+        } else {
+            setChatUserIds([...chatUserIds, newUserId])
+        }
+        // if(chatUserIds.find((id) => newUserId === id))
     }
 
     let createChat = async() => {
