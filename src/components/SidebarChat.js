@@ -14,7 +14,25 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
     let focusChat = () => {
         onFocus(chat_id)
     }
-    
+
+    let renderUsers = (users) => {
+        
+        let user = users[0]
+        if(users.length > 1){
+            return (
+                <h5>{user.first_name}, ...</h5>
+            )
+        } else {
+            return (
+                <h5>{user.first_name}</h5>
+            )
+        }
+    }
+
+    let renderMessages = () => {
+
+    }
+
     return(
         <div ref = {ref} onClick = {focusChat}class = 'sidebar-section'>
             <div class = "sidebar-img-div">
@@ -22,7 +40,7 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
             </div>
             <div class = "col-8">
                 <div class = "sidebar-content">
-                    <h5>{}</h5>
+                    {renderUsers(users)}
                     <h6>Previous Message</h6>
                 </div>
             </div>

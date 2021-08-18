@@ -1,9 +1,10 @@
 import React,{useState, useEffect} from 'react'
 import { createNewChat, getChat } from '../api'
 
-const CreateChat = ({users, chats, setChats}) => {
+const CreateChat = ({users, chats, setChats, setChat}) => {
     let [chatUserIds, setChatUserIds] = useState([])
     useEffect(() => {
+        setChat('')
         console.log(users)
     }, [])
     

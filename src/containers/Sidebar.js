@@ -4,22 +4,20 @@ import SidebarChat from '../components/SidebarChat'
 
 let nameList = ['Allen Shin', 'Jane Shin', 'Anna Shin', 'Joon Shin', 'Uncle', 'Aunt', 'Michael Peralez', 'Josh Chang', 'Jisung Park', 'Zack Epp', 'David Lee', 'Mark Heyder']
 
-const Sidebar = ({chats}) => {
-
-    let [chat_id, setChatId] = useState('')
+const Sidebar = ({chats, chat_id, current_user, setChat}) => {
 
     let onFocus = (chat_id) => {
-        console.log(chat_id)
-        setChatId(chat_id)
+        setChat(chat_id)
     }
     
     let renderSidebarChats = () => {
         console.log(chats)
         return chats.map((chat, index) => {
+            let chat_users = chat.users.filter((user) => user._id !== current_user._id)
             if(chat._id === chat_id){
-                return <SidebarChat key = {index} chat_id = {chat._id} users = {chat.users} messages = {chat.messages} focus = {true} onFocus = {onFocus}/>
+                return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {chat.messages} focus = {true} onFocus = {onFocus}/>
             } else {
-                return <SidebarChat key = {index} chat_id = {chat._id} users = {chat.users} messages = {chat.messages} focus = {false} onFocus = {onFocus}/>
+                return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {chat.messages} focus = {false} onFocus = {onFocus}/>
             }
         })
     }

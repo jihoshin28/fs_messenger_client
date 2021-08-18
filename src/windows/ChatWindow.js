@@ -1,10 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
+import { useLocation } from 'react-router-dom'
 import socket from '../socket'
 
-const ChatWindow = () => {
+const ChatWindow = ({setChat}) => {
 
     let [input, setInput] = useState('')
     let [roomId, setRoomId] = useState('')
+
     let ref = useRef()
 
     useEffect(() => {
@@ -48,8 +50,6 @@ const ChatWindow = () => {
         window.scrollTo(0, ref.current.scrollHeight);
         console.log(ref.current.scrollHeight)
     }
-
-
         return (
             <div class = "chat-section">
                 <div ref = {ref} class = "chat-box">
