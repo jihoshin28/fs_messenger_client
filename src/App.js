@@ -15,13 +15,15 @@ import socket from './socket'
 import {getUsers, getUserByEmail, getChat} from './api'
 import { useLocation } from 'react-router-dom'
 
-let history = createBrowserHistory()
+const history = createBrowserHistory()
 
 function App() {
+  // const location = useLocation()
   const[users, setUsers] = useState([])
   const[current_user, setCurrentUser] = useState({})
   const[chats, setChats] = useState([])
   const[chat_id, setChatId] = useState('')
+  const[current_chat, setCurrentChat] = useState({})
 
   useEffect(async() => {
 
@@ -37,6 +39,7 @@ function App() {
     
     // 2) get the logged in User
     let user = users.data[0]
+    console.log(user)
     setCurrentUser(user)
 
     // 3) get all the chats with chat_ids in the user chats array
@@ -52,10 +55,10 @@ function App() {
 
     socket.emit('on login', 
       { 
-        user_id: user.id, 
+        user_id: user._id, 
         username: user.username,
         email: user.email, 
-        chat_ids: chats
+        chat_ids: user.chats
       }
     )
     
@@ -73,6 +76,10 @@ function App() {
       console.log(data)
     })
 
+    socket.on('notification', (data) => {
+      console.log(data)
+    })  
+
     // socket2.on('connect', () => {
     //   console.log(socket2.id)
     // })
@@ -83,14 +90,16 @@ function App() {
   }, [])
 
   let setChat = (chat_id) => {
+    let current_chat = chats.find((chat) => chat._id === chat_id)
     setChatId(chat_id)
+    setCurrentChat(current_chat)
   }
 
   console.log(users, chats, current_user, 'initial data')
   return (
     <div className="App">
         <Router history = {history}>
-        {chat_id !== ''? <Redirect to = {{pathname: `/chat/${chat_id}`}}/> : null}
+        {chat_id !== ''? <Redirect to = {{pathname: `/chat/${chat_id}`}}/> : <Redirect to = {{pathname: `/create_chat`}}/>}
         <Sidebar current_user = {current_user} chats = {chats} chat_id = {chat_id} setChat = {setChat}/>
         <div class = 'chat-window'>
           <Navbar/>
@@ -99,7 +108,7 @@ function App() {
               <ChatWindow/>
             </Route>
             <Route exact path="/chat/:chat_id"  >
-              <ChatWindow chat_id = {chat_id}/>
+              <ChatWindow chat_id = {chat_id} current_chat = {current_chat} current_user = {current_user}/>
             </Route>
             <Route exact path ="/create_chat">
               <CreateChat users = {users} chats = {chats} setChat = {setChat} setChats = {setChats}/>

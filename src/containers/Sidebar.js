@@ -11,7 +11,6 @@ const Sidebar = ({chats, chat_id, current_user, setChat}) => {
     }
     
     let renderSidebarChats = () => {
-        console.log(chats)
         return chats.map((chat, index) => {
             let chat_users = chat.users.filter((user) => user._id !== current_user._id)
             if(chat._id === chat_id){
