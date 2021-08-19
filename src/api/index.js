@@ -35,8 +35,11 @@ export const addFriend = async(id, data) => {
 
 // when app loads get all of users chat data
 export const getChat = async(chat_id) => {
+    console.log(chat_id)
     const result = await express.get(`/chats/${chat_id}`)
-    return result.data.chat[0]
+    if(!!result.data.chat){
+        return result.data.chat[0]
+    }
 }
 
 // create a new chat

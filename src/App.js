@@ -23,7 +23,6 @@ function App() {
   const[current_user, setCurrentUser] = useState({})
   const[chats, setChats] = useState([])
   const[chat_id, setChatId] = useState('')
-  const[current_chat, setCurrentChat] = useState({})
 
   useEffect(async() => {
 
@@ -43,13 +42,16 @@ function App() {
     setCurrentUser(user)
 
     // 3) get all the chats with chat_ids in the user chats array
-    let chat_calls = user.chats.map((chat_id) => {
-      return getChat(chat_id)
-    })
+    if(user.chats.length > 0){
+      let chat_calls = user.chats.map((chatId) => {
+        return getChat(chatId)
+      })
+
+      Promise.all(chat_calls).then((chat_data) => {
+        setChats(chat_data)
+      })
+    }
     // once all the promises resolve then set state
-    Promise.all(chat_calls).then((chat_data) => {
-      setChats(chat_data)
-    })
   
     // create on login emit with call after getting all api calls 
 
@@ -90,9 +92,7 @@ function App() {
   }, [])
 
   let setChat = (chat_id) => {
-    let current_chat = chats.find((chat) => chat._id === chat_id)
     setChatId(chat_id)
-    setCurrentChat(current_chat)
   }
 
   console.log(users, chats, current_user, 'initial data')
@@ -108,7 +108,7 @@ function App() {
               <ChatWindow/>
             </Route>
             <Route exact path="/chat/:chat_id"  >
-              <ChatWindow chat_id = {chat_id} current_chat = {current_chat} current_user = {current_user}/>
+              <ChatWindow chat_id = {chat_id} current_user = {current_user}/>
             </Route>
             <Route exact path ="/create_chat">
               <CreateChat users = {users} chats = {chats} setChat = {setChat} setChats = {setChats}/>

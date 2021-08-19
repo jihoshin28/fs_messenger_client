@@ -1,36 +1,13 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { useLocation } from 'react-router-dom'
+import { getChat } from '../api'
 import socket from '../socket'
 
-const ChatWindow = ({chat_id, current_chat, current_user}) => {
+const ChatWindow = ({chat_id,current_user}) => {
 
     let [input, setInput] = useState('')
-    let location = useLocation()
     let ref = useRef()
 
-    let loadMessages = () =>{
-        console.log(ref.current)
-        if(ref.current.children.length > 0){
-            while(ref.current.children.length > 0){
-                ref.current.removeChild(ref.current.children[0])
-            }
-        }
-
-        if(Object.keys(current_chat).length > 0){
-            current_chat.messages.forEach((message) => {
-                console.log(message)
-                createNewMessage({
-                    message: message.text,
-                    username: current_user.first_name
-                })
-            })
-
-        }
-    }
-
     useEffect(() => {
-        console.log(current_chat)
-        
         socket.on('chat message', (data) => {
             console.log(data)
             createNewMessage(data)
@@ -42,9 +19,32 @@ const ChatWindow = ({chat_id, current_chat, current_user}) => {
     }, [])
 
     useEffect(() => {
-        console.log(ref.current.children, ref.current.children.length)
         loadMessages()
-    }, [current_chat])
+    }, [chat_id])
+
+    let loadMessages = async() =>{
+        let current_chat = await getChat(chat_id)
+        if(ref.current !== null){
+            if(ref.current.children.length > 0){
+                while(ref.current.children.length > 0){
+                    ref.current.removeChild(ref.current.children[0])
+                }
+            }
+        }
+        console.log(current_chat, "THERE")
+        if(current_chat !== undefined){
+            if(Object.keys(current_chat).length > 0){
+                current_chat.messages.forEach((message) => {
+                    console.log(message)
+                    createNewMessage({
+                        message: message.text,
+                        username: current_user.first_name
+                    })
+                })
+    
+            }
+        }
+    }
 
     let onChange = (e) => {
         setInput(e.target.value)
