@@ -1,8 +1,17 @@
-import React, {useEffect} from 'react'
+import React, {useEffect, useState} from 'react'
+import socket from '../socket'
 
 const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
     let ref = React.useRef()
-
+    let[recentMessage, setRecentMessage] = useState(messages[messages.length - 1].text)
+    useEffect(() => {
+        socket.on('chat message', (data) => {
+            if(data.roomId === chat_id) {
+                setRecentMessage(data.message)
+            }
+        })
+        
+    })
     useEffect(() => {
         if(focus === true){
             ref.current.classList.add("sidebar-section-focus")
@@ -29,8 +38,15 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
         }
     }
 
-    let renderMessages = () => {
-
+    let renderRecentMessage = (text) => {
+        console.log(text, "TEXT RENDER")
+        let result
+        if(text.length > 20){
+            result = `${text.slice(0, 20)}...`
+        } else {
+            result = text
+        }   
+        return result
     }
 
     return(
@@ -41,7 +57,7 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
             <div class = "col-8">
                 <div class = "sidebar-content">
                     {renderUsers(users)}
-                    <h6>Previous Message</h6>
+                    <h6>{renderRecentMessage(recentMessage)}</h6>
                 </div>
             </div>
             <div class = "read-receipt-div">

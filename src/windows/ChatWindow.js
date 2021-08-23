@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getChat } from '../api'
 import socket from '../socket'
 
-const ChatWindow = ({chat_id,current_user}) => {
+const ChatWindow = ({chat_id, current_user}) => {
 
     let [input, setInput] = useState('')
     let ref = useRef()
@@ -13,15 +13,13 @@ const ChatWindow = ({chat_id,current_user}) => {
             createNewMessage(data)
         })
         socket.emit('rooms')
-        socket.on('notification', (data) => {
-            console.log(data)
-        })  
     }, [])
 
     useEffect(() => {
         loadMessages()
     }, [chat_id])
 
+    // function to get the messages in a chat room everytime the user joins
     let loadMessages = async() =>{
         let current_chat = await getChat(chat_id)
         if(ref.current !== null){
@@ -64,13 +62,15 @@ const ChatWindow = ({chat_id,current_user}) => {
 
     let createNewMessage = (data) => {
         console.log(data)
-        let messages = ref.current
-        console.log(ref, messages)
-        let item = document.createElement('div')
-        item.textContent = `${data.username} - ${data.message}`;
-        messages.appendChild(item);
-        window.scrollTo(0, ref.current.scrollHeight);
-        console.log(ref.current.scrollHeight)
+        if(ref.current !== null){
+            let messages = ref.current
+            console.log(ref, messages)
+            let item = document.createElement('div')
+            item.textContent = `${data.username} - ${data.message}`;
+            messages.appendChild(item);
+            window.scrollTo(0, ref.current.scrollHeight);
+            console.log(ref.current.scrollHeight)
+        }
     }
         return (
             <div class = "chat-section">
