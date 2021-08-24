@@ -1,5 +1,17 @@
 import express from './express'
 
+// AUTH METHODS
+
+export const login = async(username, password) => {
+    const result = await express.post('/login', {username, password} )
+    return result
+}
+
+export const signup = async(userInfo) => {
+    const result = await express.post('/signup', userInfo)
+    return result
+}
+
 // USER METHODS
 
 // get all users
@@ -12,11 +24,6 @@ export const getUsers = async() => {
 export const getUserByEmail = async(email) => {
     const result = await express.get(`/users/${email}`)
     return result
-}
-
-// create new user
-export const createNewUser = async(user_ids) => {
-    console.log(user_ids)
 }
 
 // update user

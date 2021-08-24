@@ -1,9 +1,15 @@
 import {useState} from 'react';
 
-const Login = () => {
+const Login = ({login}) => {
+    const[username, setUsername] = useState('')
+    const[password, setPassword] = useState('')
 
     const onChange = (e) => {
-        console.log(e.target)    
+        if(e.target.name === 'username'){
+            setUsername(e.target.value)
+        } else if (e.target.name === 'password'){
+            setPassword(e.target.value)
+        }   
     }
 
     return (
@@ -18,7 +24,7 @@ const Login = () => {
                     <span class="input-group-text" id="inputGroup-sizing-default">Password</span>
                     <input onChange = {(e) => onChange(e)} name = "password" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
                 </div>
-                <button className = "btn btn-primary">Login</button>
+                <button onClick = {() => login(username, password)}className = "btn btn-primary">Login</button>
             </div>
         </div> 
     );

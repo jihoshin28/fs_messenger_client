@@ -13,7 +13,7 @@ import Navbar from './containers/Navbar'
 import {useEffect, useState} from 'react'
 import { createBrowserHistory } from 'history'
 import socket from './socket'
-import {getUsers, getUserByEmail, getChat} from './api'
+import {getUsers, getUserByEmail, getChat, login} from './api'
 import { useLocation } from 'react-router-dom'
 
 const history = createBrowserHistory()
@@ -114,9 +114,10 @@ function App() {
     }
   }
 
-  let login = () => {
+  let login = (username, password) => {
     // set the current user using this function sent down to the login form
     // use the api to confirm that the password and username match
+    
   }
 
   console.log(users, chats, current_user, 'initial data')
@@ -132,7 +133,7 @@ function App() {
               <ChatWindow/>
             </Route>
             <Route exact path = '/login'>
-              <Login/>
+              <Login login = {login}/>
             </Route>
             <Route exact path="/chat/:chat_id"  >
               <ChatWindow chat_id = {chat_id} current_user = {current_user}/>
