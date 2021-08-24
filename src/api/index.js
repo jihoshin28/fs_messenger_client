@@ -2,12 +2,12 @@ import express from './express'
 
 // AUTH METHODS
 
-export const login = async(username, password) => {
-    const result = await express.post('/login', {username, password} )
+export const apiLogin = async(email, password) => {
+    const result = await express.post('/login', {email, password} )
     return result
 }
 
-export const signup = async(userInfo) => {
+export const apiSignUp = async(userInfo) => {
     const result = await express.post('/signup', userInfo)
     return result
 }

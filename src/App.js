@@ -1,5 +1,6 @@
 import './App.css';
 import Login from './windows/Login'
+import SignUp from './windows/SignUp'
 import ChatWindow from './windows/ChatWindow'
 import CreateChat from './windows/CreateChat'
 import Sidebar from './containers/Sidebar'
@@ -13,7 +14,7 @@ import Navbar from './containers/Navbar'
 import {useEffect, useState} from 'react'
 import { createBrowserHistory } from 'history'
 import socket from './socket'
-import {getUsers, getUserByEmail, getChat, login} from './api'
+import {getUsers, getUserByEmail, getChat, apiLogin, apiSignUp} from './api'
 import { useLocation } from 'react-router-dom'
 
 const history = createBrowserHistory()
@@ -30,10 +31,7 @@ function App() {
     // On log in: 
     
     // 1) if there is no current user redirect to login page
-    if(!current_user){
-      history.push('/login')
-      
-    }
+
 
     // login function will require this user find call
     
@@ -114,10 +112,16 @@ function App() {
     }
   }
 
-  let login = (username, password) => {
+  let login = async(email, password) => {
     // set the current user using this function sent down to the login form
     // use the api to confirm that the password and username match
-    
+    let result = await apiLogin(email, password)
+    console.log(result)
+  }
+
+  let signUp = async(userInfo) => {
+    let result = await apiSignUp(userInfo)
+    console.log(result)
   }
 
   console.log(users, chats, current_user, 'initial data')
@@ -134,6 +138,9 @@ function App() {
             </Route>
             <Route exact path = '/login'>
               <Login login = {login}/>
+            </Route>
+            <Route exact path = '/sign_up'>
+              <SignUp signUp = {signUp}/>
             </Route>
             <Route exact path="/chat/:chat_id"  >
               <ChatWindow chat_id = {chat_id} current_user = {current_user}/>
