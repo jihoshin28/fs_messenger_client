@@ -50,8 +50,12 @@ body {
   width: 100%;
   padding: 0.5rem 1rem;
 }
-.chat-box > div:nth-child(odd) {
-  background: #efefef;
+.current-user {
+  background: #fffda0;
+}
+
+.other-user{
+  background: #8ee8ff
 }
 
 .dropdown-menu {
@@ -159,4 +163,16 @@ body {
 .message{
   display: flex;
   justify-content: space-between;
+}
+
+.login-page{
+  margin: 2%
+}
+
+.login-box{
+  padding: 3%;
+}
+
+.login-header{
+  margin-bottom: 3%;
 }

@@ -9,7 +9,6 @@ const ChatWindow = ({chat_id, current_user}) => {
 
     useEffect(() => {
         socket.on('chat message', (data) => {
-            console.log(data)
             createNewMessage(data)
         })
         socket.emit('rooms')
@@ -33,10 +32,10 @@ const ChatWindow = ({chat_id, current_user}) => {
         if(current_chat !== undefined){
             if(Object.keys(current_chat).length > 0){
                 current_chat.messages.forEach((message) => {
-                    console.log(message)
                     createNewMessage({
                         text: message.text,
                         username: message.username, 
+                        user_id: message.user_id,
                         day: message.day,
                         time: message.time
                         
@@ -70,23 +69,23 @@ const ChatWindow = ({chat_id, current_user}) => {
     }
 
     let createNewMessage = (data) => {
-        console.log(data, 'created new message')
         if(ref.current !== null){
             let messages = ref.current
-            console.log(ref, messages)
             let item = document.createElement('div')
             let text = document.createElement('div')
             let time = document.createElement('div')
             item.classList.add('message')
-            text.classList.add('message-text')
-            time.classList.add('message-time')
+            // check if it is current user to determine css
+            if(data.user_id === current_user._id){
+                console.log(data.user_id)
+                item.classList.add('current-user')
+            }
             text.textContent = `${data.username} : ${data.text}`;
             time.textContent = `${data.time[0]}:${data.time[1]}`
             item.appendChild(text)
             item.appendChild(time)
             messages.appendChild(item);
             window.scrollTo(0, ref.current.scrollHeight);
-            console.log(ref.current.scrollHeight)
         }
     }
         return (
