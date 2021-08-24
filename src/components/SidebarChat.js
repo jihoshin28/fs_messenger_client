@@ -3,8 +3,11 @@ import socket from '../socket'
 
 const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
     let ref = React.useRef()
-    let[recentMessage, setRecentMessage] = useState(messages[messages.length - 1].text)
+    let[recentMessage, setRecentMessage] = useState()
     useEffect(() => {
+        if(messages.length > 0){
+            setRecentMessage(messages[messages.length - 1].text)
+        }
         socket.on('chat message', (data) => {
             if(data.roomId === chat_id) {
                 setRecentMessage(data.message)
@@ -12,6 +15,7 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
         })
         
     })
+    
     useEffect(() => {
         if(focus === true){
             ref.current.classList.add("sidebar-section-focus")
@@ -25,7 +29,6 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
     }
 
     let renderUsers = (users) => {
-        
         let user = users[0]
         if(users.length > 1){
             return (
@@ -41,8 +44,10 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
     let renderRecentMessage = (text) => {
         console.log(text, "TEXT RENDER")
         let result
-        if(text.length > 20){
-            result = `${text.slice(0, 20)}...`
+        if(text === undefined) {
+            result = "No Messages"
+        } else if(text.length > 15){
+            result = `${text.slice(0, 15)}...`
         } else {
             result = text
         }   

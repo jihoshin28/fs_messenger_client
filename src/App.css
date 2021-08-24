@@ -155,3 +155,8 @@ body {
   display:flex;
   justify-content: center;
 }
+
+.message{
+  display: flex;
+  justify-content: space-between;
+}
