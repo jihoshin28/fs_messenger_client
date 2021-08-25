@@ -8,7 +8,7 @@ export const apiLogin = async(email, password) => {
 }
 
 export const apiSignUp = async(userInfo) => {
-    const result = await express.post('/signup', userInfo)
+    const result = await express.post('/users', {userInfo})
     return result
 }
 

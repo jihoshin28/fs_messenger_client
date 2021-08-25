@@ -1,8 +1,6 @@
-import React, {useState} from 'react'
+import React from 'react'
 import { Link } from 'react-router-dom'
 import SidebarChat from '../components/SidebarChat'
-
-let nameList = ['Allen Shin', 'Jane Shin', 'Anna Shin', 'Joon Shin', 'Uncle', 'Aunt', 'Michael Peralez', 'Josh Chang', 'Jisung Park', 'Zack Epp', 'David Lee', 'Mark Heyder']
 
 const Sidebar = ({chats, chat_id, current_user, setChat}) => {
 

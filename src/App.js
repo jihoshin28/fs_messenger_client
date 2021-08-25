@@ -15,7 +15,6 @@ import {useEffect, useState} from 'react'
 import { createBrowserHistory } from 'history'
 import socket from './socket'
 import {getUsers, getUserByEmail, getChat, apiLogin, apiSignUp} from './api'
-import { useLocation } from 'react-router-dom'
 
 const history = createBrowserHistory()
 
@@ -26,7 +25,7 @@ function App() {
   const[chats, setChats] = useState([])
   const[chat_id, setChatId] = useState()
 
-  useEffect(async() => {
+  useEffect(() => {
 
     // On log in: 
     
@@ -40,9 +39,12 @@ function App() {
     // setUser(current_user.data.user[0])
 
     // 2) get all Users
-    let users = await getUsers() 
-    setUsers(users.data)
-    console.log(users)
+    let fetchData = async() => {
+      let users = await getUsers() 
+      setUsers(users.data)
+      console.log(users)
+      
+    }
 
 
     // 3) get all the chats with chat_ids in the user chats array, if current user exists
@@ -63,6 +65,9 @@ function App() {
     
       // create on login emit with call after getting all api calls 
   
+    }
+    // if current user exists, emit login event
+    if(!!current_user){
       socket.emit('on login', 
         { 
           user_id: current_user._id, 
@@ -72,8 +77,8 @@ function App() {
         }
       )
     }
-    
-    // setConnection(socket)
+  
+    //set up socket listeners 
     socket.on('rooms',(data) => {
       console.log(data)
     })
