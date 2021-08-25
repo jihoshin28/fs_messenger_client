@@ -12,7 +12,7 @@ const Navbar = () => {
                     </button> */}
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <div class="navbar-nav me-auto mb-2 mb-lg-0">
-                        <h1>Username</h1>
+                        {/* <h1>Username</h1> */}
                     </div>
                     <form class="d-flex">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">

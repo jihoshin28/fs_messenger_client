@@ -46,6 +46,9 @@ function App() {
 
 
     // 3) get all the chats with chat_ids in the user chats array, if current user exists
+    
+    console.log(!current_user, current_user)
+    
     if(!!current_user){
       if(current_user.chats.length > 0){
         let chat_calls = current_user.chats.map((chatId) => {
@@ -103,7 +106,9 @@ function App() {
 
   let redirectPaths= () => {
     // if there is no user id then redirect to login 
+    console.log('redirected', console.log(!current_user))
     if(!current_user){
+
       <Redirect to = {{pathname: `/login`}}/>
     } else if(!!current_user && !!chat_id){
       <Redirect to = {{pathname: `/chat/${chat_id}`}}/>
