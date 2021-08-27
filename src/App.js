@@ -112,6 +112,10 @@ function App() {
     setChatId(chat_id)
   }
 
+  let logOut = () => {
+    setCurrentUser(null)
+  }
+
   let redirectPaths= () => {
     // if there is no user id then redirect to login
     console.log('redirected', console.log(!current_user))
@@ -147,7 +151,7 @@ function App() {
         {redirectPaths()}
         <Sidebar current_user = {current_user} chats = {chats} chat_id = {chat_id} setChat = {setChat}/>
         <div class = 'chat-window'>
-          <Navbar/>
+          <Navbar logOut = {logOut} current_user = {current_user}/>
           <Switch>
             <Route exact path="/" >
               <ChatWindow/>

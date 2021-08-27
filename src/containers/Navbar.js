@@ -1,15 +1,20 @@
 import React from 'react';
 import { Link } from 'react-router-dom'
 
-const Navbar = () => {
+const Navbar = ({logOut, current_user}) => {
+
+    let renderLogButton = () => {
+        if(!current_user){
+            return
+        } else {
+            return <button onClick = {() => logOut()}className = 'btn btn-primary'>Logout</button>
+        }
+    }
+
     return (
         <div>
             <nav class="navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
-                    {/* <a class="navbar-brand" href="#">Navbar</a> */}
-                    {/* <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
-                    <span class="navbar-toggler-icon"></span>
-                    </button> */}
                     <div class="collapse navbar-collapse" id="navbarSupportedContent">
                     <div class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
@@ -27,37 +32,13 @@ const Navbar = () => {
                     <form class="d-flex">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                             <li>
-                                <button className = 'btn btn-primary'>Logout</button>
+                                {renderLogButton()}
                             </li>
                         </ul>
                     </form>
                     </div>
                 </div>
             </nav>
-            {/* <nav>
-                <ul>
-                    <li>
-                        <Link to = "/">
-                            Homepage
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to = "/chat">
-                            Current Chat Room
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to = "/chat_rooms">
-                            Chat Rooms
-                        </Link>
-                    </li>
-                    <li>
-                        <Link to = "/create_chat">
-                            Create a Chat Room
-                        </Link>
-                    </li>
-                </ul>
-            </nav> */}
         </div>
     );
 };
