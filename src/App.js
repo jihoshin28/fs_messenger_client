@@ -46,37 +46,9 @@ function App() {
       
     }
 
+    fetchData()
 
-    // 3) get all the chats with chat_ids in the user chats array, if current user exists
-    
-    console.log(!current_user, current_user)
-    
-    if(!!current_user){
-      if(current_user.chats.length > 0){
-        let chat_calls = current_user.chats.map((chatId) => {
-          return getChat(chatId)
-        })
-  
-        Promise.all(chat_calls).then((chat_data) => {
-          setChats(chat_data)
-        })
-      }
-      // once all the promises resolve then set state
-    
-      // create on login emit with call after getting all api calls 
-  
-    }
     // if current user exists, emit login event
-    if(!!current_user){
-      socket.emit('on login', 
-        { 
-          user_id: current_user._id, 
-          username: current_user.username,
-          email: current_user.email, 
-          chat_ids: current_user.chats
-        }
-      )
-    }
   
     //set up socket listeners 
     socket.on('rooms',(data) => {
@@ -105,20 +77,53 @@ function App() {
     
   }, [])
 
+  // run this effect everytime current_user updates
+
+  useEffect(() => {
+     // 3) get all the chats with chat_ids in the user chats array, if current user exists
+    
+     if(!!current_user){
+      socket.emit('on login', 
+        { 
+          user_id: current_user._id, 
+          username: current_user.username,
+          email: current_user.email, 
+          chat_ids: current_user.chats
+        }
+      )
+      
+      if(current_user.chats.length > 0){
+        let chat_calls = current_user.chats.map((chatId) => {
+          return getChat(chatId)
+        })
+        console.log(chat_calls)
+        Promise.all(chat_calls).then((chat_data) => {
+          setChats(chat_data)
+        })
+      }
+      // once all the promises resolve then set state
+    
+      // create on login emit with call after getting all api calls 
+  
+    }
+  }, [current_user])
+
   let setChat = (chat_id) => {
     setChatId(chat_id)
   }
 
   let redirectPaths= () => {
-    // if there is no user id then redirect to login 
+    // if there is no user id then redirect to login
     console.log('redirected', console.log(!current_user))
     if(!current_user){
-
-      <Redirect to = {{pathname: `/login`}}/>
-    } else if(!!current_user && !!chat_id){
-      <Redirect to = {{pathname: `/chat/${chat_id}`}}/>
-    } else if(!!current_user && !chat_id){
-      <Redirect to = {{pathname: `/create_chat`}}/>
+      return <Redirect to = {{pathname: `/login`}}/>
+    } else if(!!current_user){
+      console.log('there is current user', chat_id)
+      if(!!chat_id){
+        return <Redirect to = {{pathname: `/chat/${chat_id}`}}/>
+      } else {
+        return <Redirect to = {{pathname: `/create_chat`}}/>
+      }
     }
   }
 
@@ -127,6 +132,7 @@ function App() {
     // use the api to confirm that the password and username match
     let result = await apiLogin(email, password)
     console.log(result)
+    setCurrentUser(result.data.user[0])
   }
 
   let signUp = async(userInfo) => {
