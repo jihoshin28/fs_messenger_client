@@ -14,7 +14,7 @@ import Navbar from './containers/Navbar'
 import {useEffect, useState} from 'react'
 import { createBrowserHistory } from 'history'
 import socket from './socket'
-import {getUsers, getUserByEmail, getChat, apiLogin, apiSignUp} from './api'
+import {getUsers, getChat, apiLogin, apiSignUp} from './api'
 
 const history = createBrowserHistory()
 
@@ -37,7 +37,8 @@ function App() {
     // get specific user based on email address at login
     // let current_user = await getUserByEmail('Edmund.OConnell13@hotmail.com')
     // setUser(current_user.data.user[0])
-
+    console.log(window.localStorage.getItem('current_user'), 'local storage current user')
+    setCurrentUser(JSON.parse(window.localStorage.getItem('current_user')))
     // 2) get all Users
     let fetchData = async() => {
       let users = await getUsers() 
@@ -77,36 +78,40 @@ function App() {
     
   }, [])
 
+  useEffect(() => {
+    // 3) get all the chats with chat_ids in the user chats array, if current user exists
+    console.log(window.localStorage.getItem('current_user'))
+    if(!!current_user){
+     socket.emit('on login', 
+       { 
+         user_id: current_user._id, 
+         username: current_user.username,
+         email: current_user.email, 
+         chat_ids: current_user.chats
+       }
+     )
+     
+     if(current_user.chats.length > 0){
+       let chat_calls = current_user.chats.map((chatId) => {
+         return getChat(chatId)
+       })
+       console.log(chat_calls)
+       Promise.all(chat_calls).then((chat_data) => {
+         setChats(chat_data)
+       })
+     }
+     // once all the promises resolve then set state
+   
+     // create on login emit with call after getting all api calls 
+ 
+   }
+ }, [current_user])
+
+  
+
   // run this effect everytime current_user updates
 
-  useEffect(() => {
-     // 3) get all the chats with chat_ids in the user chats array, if current user exists
-    
-     if(!!current_user){
-      socket.emit('on login', 
-        { 
-          user_id: current_user._id, 
-          username: current_user.username,
-          email: current_user.email, 
-          chat_ids: current_user.chats
-        }
-      )
-      
-      if(current_user.chats.length > 0){
-        let chat_calls = current_user.chats.map((chatId) => {
-          return getChat(chatId)
-        })
-        console.log(chat_calls)
-        Promise.all(chat_calls).then((chat_data) => {
-          setChats(chat_data)
-        })
-      }
-      // once all the promises resolve then set state
-    
-      // create on login emit with call after getting all api calls 
-  
-    }
-  }, [current_user])
+ 
 
   let setChat = (chat_id) => {
     setChatId(chat_id)
@@ -137,6 +142,7 @@ function App() {
     let result = await apiLogin(email, password)
     console.log(result)
     setCurrentUser(result.data.user[0])
+    window.localStorage.setItem('current_user', JSON.stringify(result.data.user[0]))
   }
 
   let signUp = async(userInfo) => {
