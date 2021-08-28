@@ -29,22 +29,14 @@ function App() {
 
     // On log in: 
     
-    // 1) if there is no current user redirect to login page
+    // 1) When application starts, grab any local storage state items
+    statePersist()
 
-
-    // login function will require this user find call
-    
-    // get specific user based on email address at login
-    // let current_user = await getUserByEmail('Edmund.OConnell13@hotmail.com')
-    // setUser(current_user.data.user[0])
-    console.log(window.localStorage.getItem('current_user'), 'local storage current user')
-    setCurrentUser(JSON.parse(window.localStorage.getItem('current_user')))
     // 2) get all Users
     let fetchData = async() => {
       let users = await getUsers() 
+      window.localStorage.setItem('users', JSON.stringify(users))
       setUsers(users.data)
-      console.log(users)
-      
     }
 
     fetchData()
@@ -80,7 +72,6 @@ function App() {
 
   useEffect(() => {
     // 3) get all the chats with chat_ids in the user chats array, if current user exists
-    console.log(window.localStorage.getItem('current_user'))
     if(!!current_user){
      socket.emit('on login', 
        { 
@@ -98,6 +89,7 @@ function App() {
        console.log(chat_calls)
        Promise.all(chat_calls).then((chat_data) => {
          setChats(chat_data)
+         window.localStorage.setItem('chats', JSON.stringify(chat_data))
        })
      }
      // once all the promises resolve then set state
@@ -110,14 +102,21 @@ function App() {
   
 
   // run this effect everytime current_user updates
-
+  let statePersist = () => {
+    setCurrentUser(JSON.parse(window.localStorage.getItem('current_user')))
+    setChats(JSON.parse(window.localStorage.getItem('chats')))
+    setChatId(JSON.parse(window.localStorage.getItem('chat_id')))
+    setUsers(JSON.parse(window.localStorage.getItem('users')))
+  }
  
 
   let setChat = (chat_id) => {
+    window.localStorage.setItem('chat_id', JSON.stringify(chat_id))
     setChatId(chat_id)
   }
 
   let logOut = () => {
+    window.localStorage.setItem('current_user', JSON.stringify(null))
     setCurrentUser(null)
   }
 

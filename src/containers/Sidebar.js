@@ -10,18 +10,20 @@ const Sidebar = ({chats, chat_id, current_user, setChat}) => {
     
     let renderSidebarChats = () => {
         console.log(chats, current_user)
-        if(chats.length > 0 && !!current_user){
-
-            return chats.map((chat, index) => {
-                let chat_users = chat.users.filter((user) => user._id !== current_user._id)
-                if(chat._id === chat_id){
-                    return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {chat.messages} focus = {true} onFocus = {onFocus}/>
-                } else {
-                    return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {chat.messages} focus = {false} onFocus = {onFocus}/>
-                }
-            })
-        } else {
-            return 
+        if(!!chats){
+            if(chats.length > 0 && !!current_user){
+    
+                return chats.map((chat, index) => {
+                    let chat_users = chat.users.filter((user) => user._id !== current_user._id)
+                    if(chat._id === chat_id){
+                        return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {chat.messages} focus = {true} onFocus = {onFocus}/>
+                    } else {
+                        return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {chat.messages} focus = {false} onFocus = {onFocus}/>
+                    }
+                })
+            } else {
+                return 
+            }
         }
     }
 
