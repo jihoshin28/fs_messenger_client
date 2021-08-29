@@ -56,6 +56,7 @@ const ChatWindow = ({chat_id, current_user}) => {
         const day = [date.getMonth(), date.getDate(), date.getFullYear()];
         const time = [date.getHours(), date.getMinutes(), date.getSeconds()];
         let message = {
+            user_id: current_user._id,
             text: input,
             roomId: chat_id,
             username: current_user.first_name, 
@@ -79,9 +80,13 @@ const ChatWindow = ({chat_id, current_user}) => {
             if(data.user_id === current_user._id){
                 console.log(data.user_id)
                 item.classList.add('current-user')
+            } else {
+                item.classList.add('other-user')
             }
+            let hours = data.time[0].toString().length === 1 ? `0${data.time[0]}`: `${data.time[0]}`
+            let minutes = data.time[1].toString().length === 1 ? `0${data.time[1]}`: `${data.time[1]}`
             text.textContent = `${data.username} : ${data.text}`;
-            time.textContent = `${data.time[0]}:${data.time[1]}`
+            time.textContent = `${hours}:${minutes}`
             item.appendChild(text)
             item.appendChild(time)
             messages.appendChild(item);

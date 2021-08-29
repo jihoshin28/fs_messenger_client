@@ -122,11 +122,9 @@ function App() {
 
   let redirectPaths= () => {
     // if there is no user id then redirect to login
-    console.log('redirected', console.log(!current_user))
     if(!current_user){
       return <Redirect to = {{pathname: `/login`}}/>
     } else if(!!current_user){
-      console.log('there is current user', chat_id)
       if(!!chat_id){
         return <Redirect to = {{pathname: `/chat/${chat_id}`}}/>
       } else {
