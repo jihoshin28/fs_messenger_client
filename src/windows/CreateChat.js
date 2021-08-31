@@ -3,19 +3,22 @@ import { createNewChat, getChat } from '../api'
 
 const CreateChat = ({users, chats, setChats, setChat}) => {
     let [chatUserIds, setChatUserIds] = useState([])
+    let [selectedUsers, setSelectedUsers] = useState([])
+
     useEffect(() => {
         setChat('')
         console.log(users)
     }, [])
     
-    let addUser = (newUserId) => {
-        let userAdded = !!chatUserIds.find((id) => newUserId === id)
+    let addUser = (user) => {
+        let userAdded = !!chatUserIds.find((id) => user._id === id)
         if(userAdded){
             return 
         } else {
-            setChatUserIds([...chatUserIds, newUserId])
+            setChatUserIds([...chatUserIds, user._id])
+            setSelectedUsers([...selectedUsers, user.first_name])
         }
-        // if(chatUserIds.find((id) => newUserId === id))
+        
     }
 
     let createChat = async() => {
@@ -32,10 +35,23 @@ const CreateChat = ({users, chats, setChats, setChat}) => {
                 return(
                     <div className = "card-body">
                         <h4>{user.first_name} {user.last_name}</h4>
-                        <button className = "btn btn-primary" onClick = {() => addUser(user._id)}>Add User</button>
+                        <button className = "btn btn-primary" onClick = {() => addUser(user)}>Add User</button>
                     </div>
 
                 ) 
+            })
+        }
+    }
+
+    let renderSelectedUsers = () => {
+        console.log(selectedUsers)
+        if(selectedUsers.length > 0){
+            return selectedUsers.map(first_name => {
+                return(
+                    <button className = 'selected-user btn btn-primary'>
+                        {first_name} <img class = 'selected-user-x' src={process.env.PUBLIC_URL + '/outline_close_black_24dp.png'} />
+                    </button>
+                )
             })
         }
     }
@@ -50,7 +66,11 @@ const CreateChat = ({users, chats, setChats, setChat}) => {
             <div class = "create-chat-div border border-2">
                 <div class = "row">
                     <div class="input-group mb-3">
-                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                        <div class = "create-chat-selected card">
+                            <div>
+                                {renderSelectedUsers()}
+                            </div>
+                        </div>
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="inputGroup-sizing-default">Search Users</span>

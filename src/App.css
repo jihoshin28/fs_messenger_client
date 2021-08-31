@@ -180,3 +180,20 @@ body {
 .signup-page{
   margin: 2%
 }
+
+.create-chat-selected{
+  display: flex;
+  width: 100%;
+  padding: 1%;
+  height: 55px;
+}
+
+.selected-user {
+  width: fit-content;
+  margin-right: 1%;
+}
+
+.selected-user-x {
+  height: 25px;
+  margin-right: -5px;
+}
