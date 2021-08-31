@@ -16,7 +16,7 @@ const CreateChat = ({users, chats, setChats, setChat}) => {
             return 
         } else {
             setChatUserIds([...chatUserIds, user._id])
-            setSelectedUsers([...selectedUsers, user.first_name])
+            setSelectedUsers([...selectedUsers, user])
         }
         
     }
@@ -43,20 +43,28 @@ const CreateChat = ({users, chats, setChats, setChat}) => {
         }
     }
 
+    let removeUser = (user) => {
+        console.log(user)
+        let newUserIds = chatUserIds.filter((id) => id !== user._id)
+        let newUsers = selectedUsers.filter((users) => users._id !== user._id)
+        setChatUserIds(newUserIds)
+        setSelectedUsers(newUsers)
+    }
+
     let renderSelectedUsers = () => {
-        console.log(selectedUsers)
+
         if(selectedUsers.length > 0){
-            return selectedUsers.map(first_name => {
+            return selectedUsers.map(user => {
                 return(
-                    <button className = 'selected-user btn btn-primary'>
-                        {first_name} <img class = 'selected-user-x' src={process.env.PUBLIC_URL + '/outline_close_black_24dp.png'} />
+                    <button onClick = {() => removeUser(user)} className = 'selected-user btn btn-primary'>
+                        {user.first_name} <img class = 'selected-user-x' src={process.env.PUBLIC_URL + '/outline_close_black_24dp.png'} />
                     </button>
                 )
             })
         }
     }
 
-    console.log(chatUserIds, 'create chat users data')
+    console.log(chatUserIds, selectedUsers,  'create chat users data')
     
     return (
         <div class = "container">
