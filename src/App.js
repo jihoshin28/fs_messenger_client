@@ -30,11 +30,6 @@ function App() {
   useEffect(() => {
 
     // On log in: 
-    
-    // 1) When application starts, grab any local storage state items
-    statePersist()
-
-    // 2) get all Users
     let fetchData = async() => {
       let users = await getUsers() 
       window.localStorage.setItem('users', JSON.stringify(users))
@@ -42,6 +37,11 @@ function App() {
     }
 
     fetchData()
+    
+    // 1) When application starts, grab any local storage state items
+    statePersist()
+
+    // 2) get all Users
 
     // if current user exists, emit login event
   
@@ -120,6 +120,12 @@ function App() {
   let logOut = () => {
     window.localStorage.setItem('current_user', JSON.stringify(null))
     setCurrentUser(null)
+    window.localStorage.setItem('chats', JSON.stringify(null))
+    setChats(null)
+    window.localStorage.setItem('chat_id', JSON.stringify(null))
+    setChatId(null)
+    window.localStorage.setItem('users', JSON.stringify(null))
+    setUsers(null)
   }
 
   let redirectPaths= () => {
@@ -152,7 +158,11 @@ function App() {
 
   let signUp = async(userInfo) => {
     let result = await apiSignUp(userInfo)
-    console.log(result)
+    if(result.data.success === false){
+      setSignUpError(result.data.message)
+    } else {
+      setCurrentUser(result.data)
+    }
   }
 
   console.log(users, chats, current_user, 'initial data')

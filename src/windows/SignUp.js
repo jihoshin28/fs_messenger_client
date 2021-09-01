@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom'
 
-const SignUp = ({signUp}) => {
+const SignUp = ({signUp, error}) => {
     const [userInfo, setUserInfo] = useState({})
 
     const onChange = (e) => {
@@ -15,12 +15,13 @@ const SignUp = ({signUp}) => {
     return (
         <div className = "signup-page">
             <Link class="btn btn-primary" to = "/login">
-                {`< Login`} 
+            <img class = 'left-arrow' src={process.env.PUBLIC_URL + '/outline_chevron_left_black_24dp.png'}/> {`Login`} 
             </Link>
             <br></br>
             <br></br>
             <h2 className = "login-header">Sign Up</h2>
             <div className = "container border rounded login-box">
+                {!!error ? <h4>{error}</h4>: null}
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="inputGroup-sizing-default">First Name</span>
                     <input onChange = {(e) => onChange(e)} name = "first_name" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>

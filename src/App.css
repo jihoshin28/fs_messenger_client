@@ -197,3 +197,8 @@ body {
   height: 25px;
   margin-right: -5px;
 }
+
+.left-arrow{
+  height: 25px;
+  margin-left: -5px;
+}

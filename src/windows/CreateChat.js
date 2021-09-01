@@ -24,22 +24,29 @@ const CreateChat = ({users, chats, setChats, setChat}) => {
     let createChat = async() => {
         let result = await createNewChat(chatUserIds)
         let new_chat = await getChat(result.data.newChat._id)
-        console.log(new_chat)
-        setChats([...chats, result.data.newChat])
+        if(!chats){
+            window.localStorage.setItem('chats', JSON.stringify(result.data.newChat))
+            setChats([new_chat])
+        } else {
+            window.localStorage.setItem('chats', JSON.stringify([...chats, result.data.newChat]))
+            setChats([...chats, new_chat])
+        }
         setChatUserIds([])
     }
 
     let renderUsersList = () => {
-        if(users.length > 0){
-            return users.map(user => {
-                return(
-                    <div className = "card-body">
-                        <h4>{user.first_name} {user.last_name}</h4>
-                        <button className = "btn btn-primary" onClick = {() => addUser(user)}>Add User</button>
-                    </div>
-
-                ) 
-            })
+        if(!!users){
+            if(users.length > 0){
+                return users.map((user, key) => {
+                    return(
+                        <div id = {key} className = "card-body">
+                            <h4>{user.first_name} {user.last_name}</h4>
+                            <button className = "btn btn-primary" onClick = {() => addUser(user)}>Add User</button>
+                        </div>
+    
+                    ) 
+                })
+            }
         }
     }
 
