@@ -1,7 +1,7 @@
 import {useState} from 'react';
 import { Link } from 'react-router-dom'
 
-const Login = ({login}) => {
+const Login = ({login, error}) => {
     const[email, setEmail] = useState('')
     const[password, setPassword] = useState('')
 
@@ -15,8 +15,9 @@ const Login = ({login}) => {
 
     return (
         <div className = "login-page">
-                <h2 className = "login-header">FS Messenger</h2>
+            <h2 className = "login-header">FS Messenger</h2>
             <div className = "container border rounded login-box">
+                {!!error ? <h4>{error}</h4>: null}
                 <div class="input-group mb-3">
                     <span class="input-group-text" id="inputGroup-sizing-default">Email</span>
                     <input onChange = {(e) => onChange(e)} name = "email" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>

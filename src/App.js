@@ -24,6 +24,8 @@ function App() {
   const[current_user, setCurrentUser] = useState()
   const[chats, setChats] = useState([])
   const[chat_id, setChatId] = useState()
+  const[loginError, setLoginError] = useState()
+  const[signUpError, setSignUpError] = useState()
 
   useEffect(() => {
 
@@ -138,8 +140,14 @@ function App() {
     // use the api to confirm that the password and username match
     let result = await apiLogin(email, password)
     console.log(result)
-    setCurrentUser(result.data.user[0])
-    window.localStorage.setItem('current_user', JSON.stringify(result.data.user[0]))
+    if(result.data.success === true){
+      setCurrentUser(result.data.user[0])
+      window.localStorage.setItem('current_user', JSON.stringify(result.data.user[0]))
+    } else {
+      setLoginError(result.data.message)
+      
+    }
+
   }
 
   let signUp = async(userInfo) => {
@@ -160,10 +168,10 @@ function App() {
               <ChatWindow/>
             </Route>
             <Route exact path = '/login'>
-              <Login login = {login}/>
+              <Login error = {loginError} login = {login}/>
             </Route>
             <Route exact path = '/sign_up'>
-              <SignUp signUp = {signUp}/>
+              <SignUp error = {signUpError} signUp = {signUp}/>
             </Route>
             <Route exact path="/chat/:chat_id"  >
               <ChatWindow chat_id = {chat_id} current_user = {current_user}/>

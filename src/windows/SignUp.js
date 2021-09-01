@@ -6,7 +6,11 @@ const SignUp = ({signUp}) => {
 
     const onChange = (e) => {
         console.log(e.target.name, e.target.value)
+        userInfo[e.target.name] = e.target.value
+        setUserInfo(userInfo)
     }
+
+    console.log(userInfo)
 
     return (
         <div className = "signup-page">
