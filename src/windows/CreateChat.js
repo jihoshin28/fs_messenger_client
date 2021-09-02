@@ -22,15 +22,19 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
 
     let createChat = async() => {
         let result = await createNewChat(chatUserIds)
-        let new_chat = await getChat(result.data.newChat._id)
-        if(!chats){
-            window.localStorage.setItem('chats', JSON.stringify([new_chat]))
-            setChats([new_chat])
-        } else {
-            window.localStorage.setItem('chats', JSON.stringify([...chats, new_chat]))
-            setChats([...chats, new_chat])
-        }
-        console.log(new_chat, "created new chat object")
+        
+        getChat(result.data.newChat._id).then((new_chat) => {
+            if(!chats){
+                setChats([result.data.new_chat])
+                window.localStorage.setItem('chats', JSON.stringify([new_chat]))
+            } else {
+                window.localStorage.setItem('chats', JSON.stringify([...chats, new_chat]))
+                setChats([...chats, new_chat])
+            }
+
+        })
+        console.log(result, result.data.newChat._id)
+        console.log(result.data.newChat, "created new chat object")
         current_user.chats = [...current_user.chats, result.data.newChat._id]
         window.localStorage.setItem('current_user', JSON.stringify(current_user))
         setChat(result.data.newChat._id)
