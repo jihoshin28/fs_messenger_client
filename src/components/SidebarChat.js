@@ -5,16 +5,17 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
     let ref = React.useRef()
     let[recentMessage, setRecentMessage] = useState()
     useEffect(() => {
+        console.log('messages changed')
         if(messages.length > 0){
             setRecentMessage(messages[messages.length - 1].text)
         }
         socket.on('chat message', (data) => {
             if(data.roomId === chat_id) {
-                setRecentMessage(data.message)
+                setRecentMessage(data.text)
             }
         })
         
-    })
+    }, [])
     
     useEffect(() => {
         if(focus === true){
@@ -30,19 +31,21 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
 
     let renderUsers = (users) => {
         let user = users[0]
-        if(users.length > 1){
-            return (
-                <h5>{user.first_name}, ...</h5>
-            )
-        } else {
-            return (
-                <h5>{user.first_name}</h5>
-            )
+        if(!!users){
+            if(users.length > 1){
+                return (
+                    <h5>{user.first_name}, ...</h5>
+                )
+            } else {
+                return (
+                    <h5>{user.first_name}</h5>
+                )
+            }
         }
     }
 
     let renderRecentMessage = (text) => {
-        console.log(text, "TEXT RENDER")
+        // console.log(text, "TEXT RENDER")
         let result
         if(text === undefined) {
             result = "No Messages"
@@ -53,7 +56,7 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
         }   
         return result
     }
-
+    console.log(recentMessage)
     return(
         <div ref = {ref} onClick = {focusChat}class = 'sidebar-section'>
             <div class = "sidebar-img-div">

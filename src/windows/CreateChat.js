@@ -1,12 +1,11 @@
 import React,{useState, useEffect} from 'react'
 import { createNewChat, getChat } from '../api'
 
-const CreateChat = ({users, chats, setChats, setChat}) => {
+const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
     let [chatUserIds, setChatUserIds] = useState([])
     let [selectedUsers, setSelectedUsers] = useState([])
 
     useEffect(() => {
-        setChat('')
         console.log(users)
     }, [])
     
@@ -25,12 +24,16 @@ const CreateChat = ({users, chats, setChats, setChat}) => {
         let result = await createNewChat(chatUserIds)
         let new_chat = await getChat(result.data.newChat._id)
         if(!chats){
-            window.localStorage.setItem('chats', JSON.stringify(result.data.newChat))
+            window.localStorage.setItem('chats', JSON.stringify([new_chat]))
             setChats([new_chat])
         } else {
-            window.localStorage.setItem('chats', JSON.stringify([...chats, result.data.newChat]))
+            window.localStorage.setItem('chats', JSON.stringify([...chats, new_chat]))
             setChats([...chats, new_chat])
         }
+        console.log(new_chat, "created new chat object")
+        current_user.chats = [...current_user.chats, result.data.newChat._id]
+        window.localStorage.setItem('current_user', JSON.stringify(current_user))
+        setChat(result.data.newChat._id)
         setChatUserIds([])
     }
 

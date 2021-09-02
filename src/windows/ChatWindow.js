@@ -9,6 +9,7 @@ const ChatWindow = ({chat_id, current_user}) => {
 
     useEffect(() => {
         socket.on('chat message', (data) => {
+            console.log(data)
             createNewMessage(data)
         })
         socket.emit('rooms')
@@ -28,7 +29,6 @@ const ChatWindow = ({chat_id, current_user}) => {
                 }
             }
         }
-        console.log(current_chat, "THERE")
         if(current_chat !== undefined){
             if(Object.keys(current_chat).length > 0){
                 current_chat.messages.forEach((message) => {
@@ -70,6 +70,7 @@ const ChatWindow = ({chat_id, current_user}) => {
     }
 
     let createNewMessage = (data) => {
+        console.log(data)
         if(ref.current !== null){
             let messages = ref.current
             let item = document.createElement('div')

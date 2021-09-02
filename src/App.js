@@ -74,6 +74,7 @@ function App() {
 
   useEffect(() => {
     // 3) get all the chats with chat_ids in the user chats array, if current user exists
+    console.log('current user changed')
     if(!!current_user){
      socket.emit('on login', 
        { 
@@ -162,6 +163,7 @@ function App() {
       setSignUpError(result.data.message)
     } else {
       setCurrentUser(result.data)
+      window.localStorage.setItem('current_user', JSON.stringify(result.data))
     }
   }
 
@@ -187,7 +189,7 @@ function App() {
               <ChatWindow chat_id = {chat_id} current_user = {current_user}/>
             </Route>
             <Route exact path ="/create_chat">
-              <CreateChat users = {users} chats = {chats} setChat = {setChat} setChats = {setChats}/>
+              <CreateChat users = {users} chats = {chats} setChat = {setChat} setChats = {setChats} current_user = {current_user}/>
             </Route>
           </Switch>
       </div>
