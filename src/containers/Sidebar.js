@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import SidebarChat from '../components/SidebarChat'
 
 const Sidebar = ({users, chats, chat_id, current_user, setChat}) => {
-    let [friendSearch, setFriendSearch] = useState("")
+    let [chatSearch, setChatSearch] = useState("")
 
     let onFocus = (chat_id) => {
         setChat(chat_id)
@@ -26,46 +26,6 @@ const Sidebar = ({users, chats, chat_id, current_user, setChat}) => {
         }
     }
 
-    let showDropdown = () => {
-        if(friendSearch === ""){
-            return ""
-        } else {
-            return "show"
-        }
-    }
-
-    let renderFriends = (input) => {
-        if(input.length > 0){
-            let searchTerm = `${input[0].toUpperCase()}${input.slice(1, input.length).toLowerCase()}` 
-            let matchingResults = users.filter((user) => {
-                let name = `${user.first_name} ${user.last_name}`
-                let slicedName = name.slice(undefined, input.length)
-                return slicedName === searchTerm
-            })
-            console.log(matchingResults)
-    
-            return matchingResults.map((user, key) => {
-                return(
-                    <li id = {key}>
-                        <button class="dropdown-item" type="button">
-                            <div class = "friend-search-result">
-                                <h6>
-                                    {user.first_name} {user.last_name}
-                                </h6>
-                                <button class= "btn btn-primary" type = "button">
-                                    
-                                </button>
-                            </div>
-                        </button>
-                    </li>
-                ) 
-      
-            })
-
-        } else {
-            return null
-        }
-    }
 
     return(
         <div class = "sidebar">
@@ -73,10 +33,7 @@ const Sidebar = ({users, chats, chat_id, current_user, setChat}) => {
                 <div class="container-fluid">
                     <div class="sidebar-nav">
                         <div class="dropdown">
-                            <input onChange = {(e) => setFriendSearch(e.target.value)} class="form-control me-2" type="search" placeholder="Search Friends" aria-label="Search"/>
-                            <ul class= {`dropdown-menu ${showDropdown()}`} aria-labelledby="dropdownMenu2">
-                                {renderFriends(friendSearch)}
-                            </ul>
+                            <input onChange = {(e) => setChatSearch(e.target.value)} class="form-control me-2" type="search" placeholder="Search Friends" aria-label="Search"/>
                         </div>
                         <Link class="btn btn-primary" to = "/create_chat">
                             +

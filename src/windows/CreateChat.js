@@ -5,6 +5,7 @@ import socket from '../socket';
 const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
     let [chatUserIds, setChatUserIds] = useState([])
     let [selectedUsers, setSelectedUsers] = useState([])
+    let [userSearch, setUserSearch] = useState("")
 
     useEffect(() => {
         console.log(users)
@@ -79,6 +80,47 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
         }
     }
 
+    let showDropdown = () => {
+        if(userSearch === ""){
+            return ""
+        } else {
+            return "show"
+        }
+    }
+
+    let renderUsers = (input) => {
+        if(input.length > 0){
+            let searchTerm = `${input[0].toUpperCase()}${input.slice(1, input.length).toLowerCase()}` 
+            let matchingResults = users.filter((user) => {
+                let name = `${user.first_name} ${user.last_name}`
+                let slicedName = name.slice(undefined, input.length)
+                return slicedName === searchTerm
+            })
+            console.log(matchingResults)
+    
+            return matchingResults.map((user, key) => {
+                return(
+                    <li id = {key}>
+                        <button class="dropdown-item" type="button">
+                            <div class = "user-search-result">
+                                <h6>
+                                    {user.first_name} {user.last_name}
+                                </h6>
+                                <button class= "btn btn-primary" type = "button">
+                                    
+                                </button>
+                            </div>
+                        </button>
+                    </li>
+                ) 
+      
+            })
+
+        } else {
+            return null
+        }
+    }
+
     console.log(chatUserIds, selectedUsers,  'create chat users data')
     
     return (
@@ -97,7 +139,12 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="inputGroup-sizing-default">Search Users</span>
-                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default"/>
+                        <div class="dropdown">
+                            <input onChange = {(e) => setUserSearch(e.target.value)} class="form-control me-2" type="search" placeholder="Search Users" aria-label="Search"/>
+                            <ul class= {`dropdown-menu ${showDropdown()}`} aria-labelledby="dropdownMenu2">
+                                {renderUsers(userSearch)}
+                            </ul>
+                        </div>
                     </div>
                     <div class = "card">
                         {renderUsersList()}
