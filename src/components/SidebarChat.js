@@ -5,7 +5,6 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
     let ref = React.useRef()
     let[recentMessage, setRecentMessage] = useState()
     useEffect(() => {
-        console.log('messages changed')
         if(messages.length > 0){
             setRecentMessage(messages[messages.length - 1].text)
         }
@@ -56,7 +55,6 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
         }   
         return result
     }
-    console.log(recentMessage)
     return(
         <div ref = {ref} onClick = {focusChat}class = 'sidebar-section'>
             <div class = "sidebar-img-div">

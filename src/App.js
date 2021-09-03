@@ -167,7 +167,7 @@ function App() {
     }
   }
 
-  console.log(users, chats, current_user, 'initial data')
+  // console.log(users, chats, current_user, 'initial data')
   return (
     <div className="App">
         <Router history = {history}>

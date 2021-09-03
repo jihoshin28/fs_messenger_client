@@ -9,7 +9,6 @@ const Sidebar = ({chats, chat_id, current_user, setChat}) => {
     }
     
     let renderSidebarChats = () => {
-        console.log(chats, current_user)
         if(!!chats){
             if(chats.length > 0 && !!current_user){
     

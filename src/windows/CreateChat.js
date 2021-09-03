@@ -1,5 +1,6 @@
 import React,{useState, useEffect} from 'react'
 import { createNewChat, getChat } from '../api'
+import socket from '../socket';
 
 const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
     let [chatUserIds, setChatUserIds] = useState([])
@@ -33,12 +34,12 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
             }
 
         })
-        console.log(result, result.data.newChat._id)
-        console.log(result.data.newChat, "created new chat object")
+        socket.emit('created room', {roomId: result.data.newChat._id})
         current_user.chats = [...current_user.chats, result.data.newChat._id]
         window.localStorage.setItem('current_user', JSON.stringify(current_user))
         setChat(result.data.newChat._id)
         setChatUserIds([])
+
     }
 
     let renderUsersList = () => {
