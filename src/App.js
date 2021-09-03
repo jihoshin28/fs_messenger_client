@@ -32,7 +32,7 @@ function App() {
     // On log in: 
     let fetchData = async() => {
       let users = await getUsers() 
-      window.localStorage.setItem('users', JSON.stringify(users))
+      window.localStorage.setItem('users', JSON.stringify(users.data))
       setUsers(users.data)
     }
 
@@ -172,7 +172,7 @@ function App() {
     <div className="App">
         <Router history = {history}>
         {redirectPaths()}
-        <Sidebar current_user = {current_user} chats = {chats} chat_id = {chat_id} setChat = {setChat}/>
+        <Sidebar users = {users} current_user = {current_user} chats = {chats} chat_id = {chat_id} setChat = {setChat}/>
         <div class = 'chat-window'>
           <Navbar logOut = {logOut} current_user = {current_user}/>
           <Switch>

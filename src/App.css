@@ -202,3 +202,10 @@ body {
   height: 25px;
   margin-left: -5px;
 }
+
+.friend-search-result {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 10%;
+}

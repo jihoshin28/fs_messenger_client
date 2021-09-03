@@ -1,11 +1,9 @@
-import React, { useState, useRef } from 'react'
+import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 import SidebarChat from '../components/SidebarChat'
 
-const Sidebar = ({chats, chat_id, current_user, setChat}) => {
+const Sidebar = ({users, chats, chat_id, current_user, setChat}) => {
     let [friendSearch, setFriendSearch] = useState("")
-    let ref = useRef()
-
 
     let onFocus = (chat_id) => {
         setChat(chat_id)
@@ -37,14 +35,36 @@ const Sidebar = ({chats, chat_id, current_user, setChat}) => {
     }
 
     let renderFriends = (input) => {
-        
-        return(
-            <React.Fragment>
-                <li><button class="dropdown-item" type="button">Action</button></li>
-                <li><button class="dropdown-item" type="button">Another action</button></li>
-                <li><button class="dropdown-item" type="button">Something else here</button></li>
-            </React.Fragment>
-        )
+        if(input.length > 0){
+            let searchTerm = `${input[0].toUpperCase()}${input.slice(1, input.length).toLowerCase()}` 
+            let matchingResults = users.filter((user) => {
+                let name = `${user.first_name} ${user.last_name}`
+                let slicedName = name.slice(undefined, input.length)
+                return slicedName === searchTerm
+            })
+            console.log(matchingResults)
+    
+            return matchingResults.map((user, key) => {
+                return(
+                    <li id = {key}>
+                        <button class="dropdown-item" type="button">
+                            <div class = "friend-search-result">
+                                <h6>
+                                    {user.first_name} {user.last_name}
+                                </h6>
+                                <button class= "btn btn-primary" type = "button">
+                                    
+                                </button>
+                            </div>
+                        </button>
+                    </li>
+                ) 
+      
+            })
+
+        } else {
+            return null
+        }
     }
 
     return(
