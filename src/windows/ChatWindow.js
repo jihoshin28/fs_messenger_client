@@ -11,47 +11,23 @@ const ChatWindow = ({chat_id, current_user}) => {
     
     useEffect(() => {
         socket.on('chat message', (data) => {
-            console.log(messages)
-            // if(chat_id === data.roomId){
-            //     console.log(chat_id)
             let newMessages = [...messages, data]
             setMessages(newMessages)
-            console.log(messages)
-            // }
         })
     })
 
     useEffect(() => {
         loadMessages(chat_id)
-        console.log(messages, 'chat id changed')
-        
+        console.log(messages, 'chat room switched')
     }, [chat_id])
 
     // function to get the messages in a chat room everytime the user joins
     let loadMessages = async(chat_id) =>{
         let current_chat = await getChat(chat_id)
-        // if(ref.current !== null){
-        //     if(ref.current.children.length > 0){
-        //         while(ref.current.children.length > 0){
-        //             ref.current.removeChild(ref.current.children[0])
-        //         }
-        //     }
-        // }
         if(current_chat !== undefined){
             if(Object.keys(current_chat).length > 0){
                 let newMessages = current_chat.messages
                 setMessages(newMessages)
-                // current_chat.messages.forEach((message) => {
-                //     createNewMessage({
-                //         text: message.text,
-                //         username: message.username, 
-                //         user_id: message.user_id,
-                //         day: message.day,
-                //         time: message.time
-                        
-                //     })
-                // })
-    
             }
         }
     }
@@ -76,6 +52,7 @@ const ChatWindow = ({chat_id, current_user}) => {
         }
         socket.emit('chat message', message)
         setInput('')
+        window.scrollTo(0, ref.current.scrollHeight);
     }
 
     let renderMessages = (messages) => {
@@ -95,40 +72,17 @@ const ChatWindow = ({chat_id, current_user}) => {
         }
     }
 
-    // let createNewMessage = (data) => {
-    //     if(ref.current !== null){
-    //         let messages = ref.current
-    //         let item = document.createElement('div')
-    //         let text = document.createElement('div')
-    //         let time = document.createElement('div')
-    //         item.classList.add('message')
-    //         // check if it is current user to determine css
-    //         if(data.user_id === current_user._id){
-    //             item.classList.add('current-user')
-    //         } else {
-    //             item.classList.add('other-user')
-    //         }
-    //         let hours = data.time[0].toString().length === 1 ? `0${data.time[0]}`: `${data.time[0]}`
-    //         let minutes = data.time[1].toString().length === 1 ? `0${data.time[1]}`: `${data.time[1]}`
-    //         text.textContent = `${data.username} : ${data.text}`;
-    //         time.textContent = `${hours}:${minutes}`
-    //         item.appendChild(text)
-    //         item.appendChild(time)
-    //         messages.appendChild(item);
-    //         window.scrollTo(0, ref.current.scrollHeight);
-    //     }
-    // }
-        return (
-            <div class = "chat-section">
-                <div ref = {ref} class = "chat-box">
-                    {renderMessages(messages)}
-                </div>
-                
-                <form id="form" action="" onSubmit = {(e) => sendMessage(e)}>
-                    <input value = {input} onChange = {(e) => onChange(e)} id="input" autoComplete="off" /><button>Send</button>
-                </form>
+    return (
+        <div class = "chat-section">
+            <div ref = {ref} class = "chat-box">
+                {renderMessages(messages)}
             </div>
-        )
+            
+            <form id="form" action="" onSubmit = {(e) => sendMessage(e)}>
+                <input value = {input} onChange = {(e) => onChange(e)} id="input" autoComplete="off" /><button>Send</button>
+            </form>
+        </div>
+    )
 }
 
 export default ChatWindow;
