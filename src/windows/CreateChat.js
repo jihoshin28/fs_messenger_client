@@ -137,7 +137,7 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="inputGroup-sizing-default">Search Users</span>
-                        <div class="dropdown" style = {{width: '50vw'}}>
+                        <div class="dropdown" style = {{width: '75%'}}>
                             <input onChange = {(e) => setUserSearch(e.target.value)} class="form-control me-2" type="search" placeholder="Search Users" aria-label="Search"/>
                             <ul class= {`dropdown-menu ${showDropdown()}`} aria-labelledby="dropdownMenu2">
                                 {renderUserSearch(userSearch)}

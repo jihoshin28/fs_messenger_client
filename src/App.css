@@ -203,6 +203,22 @@ body {
   margin-left: -5px;
 }
 
+.chat-icon {
+  width: 50%;
+}
+
+.logout-icon {
+  width: 22.5%;
+  height: 22.5%;
+  margin-right: -20%;
+  margin-left: 10%;
+}
+
+.menu-icon {
+  width: 50%;
+  height: 50%;
+}
+
 .user-search-result {
   display: flex;
   align-items: center;
@@ -211,5 +227,5 @@ body {
 }
 
 .userSearchBar {
-  
+
 }

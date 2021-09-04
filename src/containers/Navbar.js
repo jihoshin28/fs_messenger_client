@@ -7,7 +7,9 @@ const Navbar = ({logOut, current_user}) => {
         if(!current_user){
             return
         } else {
-            return <button onClick = {() => logOut()}className = 'btn btn-primary'>Logout</button>
+            return <button onClick = {() => logOut()}className = 'btn btn-primary'>
+                Logout <img className = "logout-icon" src = {process.env.PUBLIC_URL + '/outline_logout_black_24dp.png'}></img> 
+            </button>
         }
     }
 
@@ -19,7 +21,7 @@ const Navbar = ({logOut, current_user}) => {
                     <div class="navbar-nav me-auto mb-2 mb-lg-0">
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                                ...
+                                <img className = "menu-icon" src = {process.env.PUBLIC_URL + '/outline_list_black_24dp.png'}></img> 
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                 <li><a class="dropdown-item" href="#">Action</a></li>

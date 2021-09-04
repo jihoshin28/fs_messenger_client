@@ -32,11 +32,11 @@ const Sidebar = ({users, chats, chat_id, current_user, setChat}) => {
             <nav class="sticky-nav navbar navbar-expand-lg navbar-light bg-light">
                 <div class="container-fluid">
                     <div class="sidebar-nav">
-                        <div class="dropdown">
+                        <div class="dropdown" style = {{width: '85%', marginRight:'5%'}}>
                             <input onChange = {(e) => setChatSearch(e.target.value)} class="form-control me-2" type="search" placeholder="Search Friends" aria-label="Search"/>
                         </div>
                         <Link class="btn btn-primary" to = "/create_chat">
-                            +
+                            <img className = "chat-icon" src = {process.env.PUBLIC_URL + '/outline_question_answer_black_24dp.png'}></img> 
                         </Link>
                       
                     </div>
