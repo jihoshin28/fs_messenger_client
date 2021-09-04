@@ -88,7 +88,7 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
         }
     }
 
-    let renderUsers = (input) => {
+    let renderUserSearch = (input) => {
         if(input.length > 0){
             let searchTerm = `${input[0].toUpperCase()}${input.slice(1, input.length).toLowerCase()}` 
             let matchingResults = users.filter((user) => {
@@ -106,16 +106,14 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
                                 <h6>
                                     {user.first_name} {user.last_name}
                                 </h6>
-                                <button class= "btn btn-primary" type = "button">
-                                    
+                                <button onClick = {() => addUser(user)}class= "btn btn-primary" type = "button">
+                                    Add User
                                 </button>
                             </div>
                         </button>
                     </li>
                 ) 
-      
             })
-
         } else {
             return null
         }
@@ -139,10 +137,10 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
                     </div>
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="inputGroup-sizing-default">Search Users</span>
-                        <div class="dropdown">
+                        <div class="dropdown" style = {{width: '50vw'}}>
                             <input onChange = {(e) => setUserSearch(e.target.value)} class="form-control me-2" type="search" placeholder="Search Users" aria-label="Search"/>
                             <ul class= {`dropdown-menu ${showDropdown()}`} aria-labelledby="dropdownMenu2">
-                                {renderUsers(userSearch)}
+                                {renderUserSearch(userSearch)}
                             </ul>
                         </div>
                     </div>
