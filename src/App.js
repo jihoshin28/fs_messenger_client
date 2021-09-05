@@ -1,4 +1,5 @@
 import './App.css';
+import Home from './windows/Home'
 import Login from './windows/Login'
 import SignUp from './windows/SignUp'
 import ChatWindow from './windows/ChatWindow'
@@ -30,13 +31,11 @@ function App() {
   useEffect(() => {
 
     // On log in: 
-    let fetchData = async() => {
-      let users = await getUsers() 
+    getUsers().then((users)=> {
       window.localStorage.setItem('users', JSON.stringify(users.data))
       setUsers(users.data)
-    }
-
-    fetchData()
+    })
+    
     
     // 1) When application starts, grab any local storage state items
     statePersist()
@@ -137,7 +136,7 @@ function App() {
       if(!!chat_id){
         return <Redirect to = {{pathname: `/chat/${chat_id}`}}/>
       } else {
-        return <Redirect to = {{pathname: `/create_chat`}}/>
+        return <Redirect to = {{pathname: `/`}}/>
       }
     }
   }
@@ -177,7 +176,7 @@ function App() {
           <Navbar logOut = {logOut} current_user = {current_user}/>
           <Switch>
             <Route exact path="/" >
-              <ChatWindow/>
+              <Home/>
             </Route>
             <Route exact path = '/login'>
               <Login error = {loginError} login = {login}/>

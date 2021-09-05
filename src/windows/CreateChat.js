@@ -97,7 +97,8 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
                 let slicedName = name.slice(undefined, input.length)
                 return slicedName === searchTerm
             })
-            let topResults = matchingResults.slice(0, 5)
+            
+            let topResults = matchingResults.filter((user) => user._id !== current_user._id).slice(0, 5)
     
             return topResults.map((user, key) => {
                 return(
