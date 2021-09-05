@@ -38,6 +38,12 @@ export const addFriend = async(id, data) => {
     return result
 }
 
+//leave room
+export const leaveRoom = async(chat_id, user_id) => {
+    const result = await express.patch(`/users/leave/${user_id}`, {chat_id})
+    return result
+}
+
 // CHAT METHODS
 
 // when app loads get all of users chat data

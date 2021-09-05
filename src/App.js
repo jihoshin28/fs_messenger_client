@@ -153,9 +153,8 @@ function App() {
       window.localStorage.setItem('current_user', JSON.stringify(result.data.user[0]))
     } else {
       setLoginError(result.data.message)
-      
     }
-
+  
   }
 
   let signUp = async(userInfo) => {
@@ -175,7 +174,7 @@ function App() {
         {redirectPaths()}
         <Sidebar users = {users} current_user = {current_user} chats = {chats} chat_id = {chat_id} setChat = {setChat}/>
         <div class = 'chat-window'>
-          <Navbar logOut = {logOut} current_user = {current_user}/>
+          <Navbar logOut = {logOut} chat_id = {chat_id} current_user = {current_user}/>
           <Switch>
             <Route exact path="/" >
               <Home/>

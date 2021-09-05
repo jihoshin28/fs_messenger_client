@@ -40,7 +40,7 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
             }
 
         })
-        socket.emit('created room', {roomId: result.data.newChat._id})
+        socket.emit('created room', {'newChat': result.data.newChat})
         current_user.chats = [...current_user.chats, result.data.newChat._id]
         window.localStorage.setItem('current_user', JSON.stringify(current_user))
         setChat(result.data.newChat._id)
@@ -149,15 +149,15 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
                             </ul>
                         </div>
                     </div>
-                    <div class = "card">
-                        {renderUsersList()}
-                    </div>
-                    <br></br>
-                    <div className = 'center-div'>
+                    <div className = 'center-div create-chat-button'>
                         <button onClick = {() => createChat(chatUserIds)} className = 'btn btn-primary btn-center'>
                             Create Chat
                         </button>
                     </div>
+                    <div class = "card">
+                        {renderUsersList()}
+                    </div>
+                    <br></br>
                 </div>
             </div>
 

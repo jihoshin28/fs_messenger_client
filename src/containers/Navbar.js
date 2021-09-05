@@ -1,7 +1,16 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
+import socket from '../socket';
+import {leaveRoom} from '../api'
 
-const Navbar = ({logOut, current_user}) => {
+const Navbar = ({logOut, current_user, chat_id}) => {
+    
+    let exitRoom = (chat_id, user_id) => {
+        // api call to handle chat and user changes
+        leaveRoom(chat_id, user_id)
+
+        // socket event to handle leaving room
+        socket.emit('leave room', chat_id)
+    }
 
     let renderLogButton = () => {
         if(!current_user){
@@ -24,7 +33,7 @@ const Navbar = ({logOut, current_user}) => {
                                 <img className = "menu-icon" src = {process.env.PUBLIC_URL + '/outline_list_black_24dp.png'}></img> 
                             </a>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Action</a></li>
+                                <li><a onClick = {() => exitRoom(chat_id, current_user._id)}class="dropdown-item" href="#">Leave Room</a></li>
                                 <li><a class="dropdown-item" href="#">Another action</a></li>
                                 <li><hr class="dropdown-divider"/></li>
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
