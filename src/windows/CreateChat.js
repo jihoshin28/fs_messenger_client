@@ -8,8 +8,10 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
     let [userSearch, setUserSearch] = useState("")
 
     useEffect(() => {
-        console.log(users)
-    }, [])
+        if(!!current_user){
+            setChatUserIds([current_user._id])
+        }
+    }, [current_user])
     
     let addUser = (user) => {
         let userAdded = !!chatUserIds.find((id) => user._id === id)
@@ -19,7 +21,6 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
             setChatUserIds([...chatUserIds, user._id])
             setSelectedUsers([...selectedUsers, user])
         }
-        
     }
 
     let createChat = async() => {
@@ -46,13 +47,13 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
     let renderUsersList = () => {
         if(!!users){
             if(users.length > 0){
-                return users.map((user, key) => {
+                let usersList = users.filter((user) => user._id !== current_user._id)
+                return usersList.map((user, key) => {
                     return(
                         <div id = {key} className = "card-body">
                             <h4>{user.first_name} {user.last_name}</h4>
                             <button className = "btn btn-primary" onClick = {() => addUser(user)}>Add User</button>
                         </div>
-    
                     ) 
                 })
             }
@@ -70,9 +71,9 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
     let renderSelectedUsers = () => {
 
         if(selectedUsers.length > 0){
-            return selectedUsers.map(user => {
+            return selectedUsers.map((user, key) => {
                 return(
-                    <button onClick = {() => removeUser(user)} className = 'selected-user btn btn-primary'>
+                    <button id = {key} onClick = {() => removeUser(user)} className = 'selected-user btn btn-primary'>
                         {user.first_name} <img class = 'selected-user-x' src={process.env.PUBLIC_URL + '/outline_close_black_24dp.png'} />
                     </button>
                 )
@@ -96,9 +97,9 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
                 let slicedName = name.slice(undefined, input.length)
                 return slicedName === searchTerm
             })
-            console.log(matchingResults)
+            let topResults = matchingResults.slice(0, 5)
     
-            return matchingResults.map((user, key) => {
+            return topResults.map((user, key) => {
                 return(
                     <li id = {key}>
                         <button class="dropdown-item" type="button">
@@ -119,7 +120,6 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
         }
     }
 
-    console.log(chatUserIds, selectedUsers,  'create chat users data')
     
     return (
         <div class = "container">
