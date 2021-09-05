@@ -188,6 +188,14 @@ body {
   height: 55px;
 }
 
+.chat-intro {
+  display: flex;
+  width: 100%;
+  margin-top: 10%;
+  justify-content: center;
+  align-items: center;
+}
+
 .selected-user {
   width: fit-content;
   margin-right: 1%;

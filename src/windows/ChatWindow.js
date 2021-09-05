@@ -62,7 +62,7 @@ const ChatWindow = ({chat_id, current_user}) => {
                 let hours = message.time[0].toString().length === 1 ? `0${message.time[0]}`: `${message.time[0]}`
                 let minutes = message.time[1].toString().length === 1 ? `0${message.time[1]}`: `${message.time[1]}`
                 return (
-                    <div className = {`message ${user}`}>
+                    <div key = {message._id} className = {`message ${user}`}>
                         <div>{message.username}: {message.text}</div>
                         <div>{hours}:{minutes}</div>
                     </div>
@@ -75,7 +75,14 @@ const ChatWindow = ({chat_id, current_user}) => {
     return (
         <div class = "chat-section">
             <div ref = {ref} class = "chat-box">
-                {renderMessages(messages)}
+
+                {messages.length > 0? renderMessages(messages): 
+                    <div className = "container">
+                        <div className = "chat-intro">
+                            <h3>Start chatting!</h3>
+                        </div>
+                    </div>
+                }
             </div>
             
             <form id="form" action="" onSubmit = {(e) => sendMessage(e)}>

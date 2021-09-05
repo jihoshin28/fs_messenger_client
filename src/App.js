@@ -31,10 +31,7 @@ function App() {
   useEffect(() => {
 
     // On log in: 
-    getUsers().then((users)=> {
-      window.localStorage.setItem('users', JSON.stringify(users.data))
-      setUsers(users.data)
-    })
+    
     
     
     // 1) When application starts, grab any local storage state items
@@ -74,6 +71,11 @@ function App() {
   useEffect(() => {
     // 3) get all the chats with chat_ids in the user chats array, if current user exists
     console.log('current user changed')
+    getUsers().then((users)=> {
+      console.log(users)
+      window.localStorage.setItem('users', JSON.stringify(users.data))
+      setUsers(users.data)
+    })
     if(!!current_user){
      socket.emit('on login', 
        { 

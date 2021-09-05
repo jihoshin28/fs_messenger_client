@@ -8,6 +8,10 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
     let [userSearch, setUserSearch] = useState("")
 
     useEffect(() => {
+        console.log(users, "ON USERS UPDATE")
+    }, [users])
+
+    useEffect(() => {
         if(!!current_user){
             setChatUserIds([current_user._id])
         }
@@ -48,9 +52,9 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
         if(!!users){
             if(users.length > 0){
                 let usersList = users.filter((user) => user._id !== current_user._id)
-                return usersList.map((user, key) => {
+                return usersList.map((user) => {
                     return(
-                        <div id = {key} className = "card-body">
+                        <div key = {user._id} className = "card-body">
                             <h4>{user.first_name} {user.last_name}</h4>
                             <button className = "btn btn-primary" onClick = {() => addUser(user)}>Add User</button>
                         </div>
@@ -71,9 +75,9 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
     let renderSelectedUsers = () => {
 
         if(selectedUsers.length > 0){
-            return selectedUsers.map((user, key) => {
+            return selectedUsers.map((user) => {
                 return(
-                    <button id = {key} onClick = {() => removeUser(user)} className = 'selected-user btn btn-primary'>
+                    <button key = {user._id} onClick = {() => removeUser(user)} className = 'selected-user btn btn-primary'>
                         {user.first_name} <img class = 'selected-user-x' src={process.env.PUBLIC_URL + '/outline_close_black_24dp.png'} />
                     </button>
                 )
