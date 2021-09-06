@@ -8,6 +8,10 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
     let [userSearch, setUserSearch] = useState("")
 
     useEffect(() => {
+        setChat('create')
+    }, [])
+
+    useEffect(() => {
         console.log(users, "ON USERS UPDATE")
     }, [users])
 

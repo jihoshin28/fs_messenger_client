@@ -2,12 +2,11 @@ import React from 'react';
 import socket from '../socket';
 import {leaveRoom} from '../api'
 
-const Navbar = ({logOut, current_user, chat_id}) => {
+const Navbar = ({logOut, current_user, chat_id, chats}) => {
     
     let exitRoom = (chat_id, user_id) => {
         // api call to handle chat and user changes
         leaveRoom(chat_id, user_id)
-
         // socket event to handle leaving room
         socket.emit('leave room', chat_id)
     }
@@ -20,6 +19,27 @@ const Navbar = ({logOut, current_user, chat_id}) => {
                 Logout <img className = "logout-icon" src = {process.env.PUBLIC_URL + '/outline_logout_black_24dp.png'}></img> 
             </button>
         }
+    }
+    
+    let renderBanner = () => {
+        console.log(chats)
+        let result
+        if(!!chat_id){
+            if(chats.length > 0){
+                console.log(chats.find((chat) => chat_id === chat._id))
+                let chat = chats.find((chat) => chat_id === chat._id)
+                if(!!chat){
+                    let users = chat.users.filter((user) => user._id !== current_user._id)
+                    result = users.map((user) => {
+                        return <h4>{user.first_name}</h4>
+                    })
+                }
+            }
+        } else {
+            result = null
+        }
+        return result
+
     }
 
     return (
@@ -39,6 +59,9 @@ const Navbar = ({logOut, current_user, chat_id}) => {
                                 <li><a class="dropdown-item" href="#">Something else here</a></li>
                             </ul>
                         </li>
+                    </div>
+                    <div className = "navbar-nav me-auto mb-2 mb-lg-0">
+                        <div>{renderBanner()}</div>
                     </div>
                     <form class="d-flex">
                         <ul class="navbar-nav me-auto mb-2 mb-lg-0">

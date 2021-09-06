@@ -103,8 +103,6 @@ function App() {
    }
  }, [current_user])
 
-  
-
   // run this effect everytime current_user updates
   let statePersist = () => {
     setCurrentUser(JSON.parse(window.localStorage.getItem('current_user')))
@@ -136,7 +134,11 @@ function App() {
       return <Redirect to = {{pathname: `/login`}}/>
     } else if(!!current_user){
       if(!!chat_id){
-        return <Redirect to = {{pathname: `/chat/${chat_id}`}}/>
+        if(chat_id === "create"){
+          return <Redirect to = {{pathname: `/create_chat`}}/>
+        } else {
+          return <Redirect to = {{pathname: `/chat/${chat_id}`}}/>
+        }
       } else {
         return <Redirect to = {{pathname: `/`}}/>
       }
@@ -158,6 +160,9 @@ function App() {
   }
 
   let signUp = async(userInfo) => {
+    userInfo['first_name'] = userInfo['first_name'][0].toUpperCase() + userInfo['first_name'].slice(1, userInfo['first_name'].length).toLowerCase()
+    userInfo['last_name'] = userInfo['last_name'][0].toUpperCase() + userInfo['last_name'].slice(1, userInfo['first_name'].length).toLowerCase()
+
     let result = await apiSignUp(userInfo)
     if(result.data.success === false){
       setSignUpError(result.data.message)
@@ -174,7 +179,7 @@ function App() {
         {redirectPaths()}
         <Sidebar users = {users} current_user = {current_user} chats = {chats} chat_id = {chat_id} setChat = {setChat}/>
         <div class = 'chat-window'>
-          <Navbar logOut = {logOut} chat_id = {chat_id} current_user = {current_user}/>
+          <Navbar chats = {chats} logOut = {logOut} chat_id = {chat_id} current_user = {current_user}/>
           <Switch>
             <Route exact path="/" >
               <Home/>
