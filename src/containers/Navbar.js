@@ -30,9 +30,21 @@ const Navbar = ({logOut, current_user, chat_id, chats}) => {
                 let chat = chats.find((chat) => chat_id === chat._id)
                 if(!!chat){
                     let users = chat.users.filter((user) => user._id !== current_user._id)
-                    result = users.map((user) => {
-                        return <h4>{user.first_name}</h4>
-                    })
+                    
+                    if(users.length <= 1){
+                        result = <h4>{users[0].first_name}</h4>
+                    } else {
+                        let text = ""
+                        for(let i = 0; i < users.length; i++){
+                            console.log(users[i].first_name)
+                            if(i < users.length - 1){
+                                text += `${users[i].first_name}, ` 
+                            } else {
+                                text += `${users[i].first_name}` 
+                            }
+                        }
+                        result = <h4>{text}</h4>
+                    }
                 }
             }
         } else {
