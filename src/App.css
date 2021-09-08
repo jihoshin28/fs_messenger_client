@@ -241,3 +241,9 @@ body {
 .create-chat-button {
   margin-bottom: 2%;
 }
+
+.more-users-button {
+  display: flex;
+  justify-content: center;
+  margin: 3%;
+}

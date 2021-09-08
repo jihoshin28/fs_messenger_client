@@ -6,6 +6,7 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
     let [chatUserIds, setChatUserIds] = useState([])
     let [selectedUsers, setSelectedUsers] = useState([])
     let [userSearch, setUserSearch] = useState("")
+    let [userCount, setUserCount] = useState(10)
 
     useEffect(() => {
         setChat('create')
@@ -56,7 +57,8 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
         if(!!users){
             if(users.length > 0){
                 let usersList = users.filter((user) => user._id !== current_user._id)
-                return usersList.map((user) => {
+                let slicedUsersList = usersList.slice(undefined, userCount)
+                return slicedUsersList.map((user) => {
                     return(
                         <div key = {user._id} className = "card-body">
                             <h4>{user.first_name} {user.last_name}</h4>
@@ -160,6 +162,17 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
                     </div>
                     <div class = "card">
                         {renderUsersList()}
+                        {
+                            userCount < users.length? 
+                            <div class = "more-users-button"> 
+                                <button onClick = {() => setUserCount(userCount + 10)} className = 'btn btn-primary btn-center'>
+                                    More Users
+                                </button>
+                            </div>
+                            :
+                            null
+
+                        }
                     </div>
                     <br></br>
                 </div>
