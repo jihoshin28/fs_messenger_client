@@ -24,9 +24,9 @@ const Navbar = ({logOut, current_user, chat_id, chats}) => {
     let renderBanner = () => {
         console.log(chats)
         let result
-        if(!!chat_id){
+        if(!!chat_id && chats !== null){
             if(chats.length > 0){
-                console.log(chats.find((chat) => chat_id === chat._id))
+                
                 let chat = chats.find((chat) => chat_id === chat._id)
                 if(!!chat){
                     let users = chat.users.filter((user) => user._id !== current_user._id)

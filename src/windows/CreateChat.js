@@ -37,7 +37,7 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
         
         getChat(result.data.newChat._id).then((new_chat) => {
             if(!chats){
-                setChats([result.data.new_chat])
+                setChats([new_chat])
                 window.localStorage.setItem('chats', JSON.stringify([new_chat]))
             } else {
                 window.localStorage.setItem('chats', JSON.stringify([...chats, new_chat]))
@@ -54,7 +54,7 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
     }
 
     let renderUsersList = () => {
-        if(!!users){
+        if(users !== null){
             if(users.length > 0){
                 let usersList = users.filter((user) => user._id !== current_user._id)
                 let slicedUsersList = usersList.slice(undefined, userCount)

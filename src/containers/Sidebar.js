@@ -14,52 +14,55 @@ const Sidebar = ({users, chats, chat_id, current_user, setChat}) => {
     }
     
     let renderSidebarChats = () => {
+        console.log(chats)
         let chatSearchResults
-        if(chatSearch === ""){
-            chatSearchResults = chats
-        } else {
-            let searchTerm = `${chatSearch[0].toUpperCase()}${chatSearch.slice(1, chatSearch.length).toLowerCase()}`
-            let results = chats.filter(chat => {
-                let users = chat.users.filter((user) => user._id !== current_user._id)
-                console.log(users)
-                let chatBoolean = false
-                if(users.length > 2){
-                    for(let i = 0; i < users.length; i++){
-                        let user = users[i]
-                        let name = `${user.first_name} ${user.last_name}`
-                        let slicedName = name.slice(undefined, searchTerm.length)
-                        if(slicedName === searchTerm){
-                            console.log('hit multiple', name)
-                            chatBoolean = true
-                        }
-                    }
-                } else {
-                    let name = `${users[0].first_name} ${users[0].last_name}`
-                    let slicedName = name.slice(undefined, searchTerm.length)
-                        if(slicedName === searchTerm){
-                            console.log('hit', name)
-                            chatBoolean = true
-                        }
-                }
-                return chatBoolean
-            })
-            chatSearchResults = results
-        }
-
-        if(!!chatSearchResults){
-            if(chatSearchResults.length > 0 && !!current_user){
-                return chatSearchResults.map((chat, index) => {
-                    let chat_users = chat.users.filter((user) => user._id !== current_user._id)
-                    if(chat._id === chat_id){
-                        return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {chat.messages} focus = {true} onFocus = {onFocus}/>
-                    } else {
-                        return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {chat.messages} focus = {false} onFocus = {onFocus}/>
-                    }
-                })
+        if(chats !== null){
+            if(chatSearch === ""){
+                chatSearchResults = chats
             } else {
-                return 
+                let searchTerm = `${chatSearch[0].toUpperCase()}${chatSearch.slice(1, chatSearch.length).toLowerCase()}`
+                let results = chats.filter(chat => {
+                    let users = chat.users.filter((user) => user._id !== current_user._id)
+                    console.log(users)
+                    let chatBoolean = false
+                    if(users.length > 2){
+                        for(let i = 0; i < users.length; i++){
+                            let user = users[i]
+                            let name = `${user.first_name} ${user.last_name}`
+                            let slicedName = name.slice(undefined, searchTerm.length)
+                            if(slicedName === searchTerm){
+                                console.log('hit multiple', name)
+                                chatBoolean = true
+                            }
+                        }
+                    } else {
+                        let name = `${users[0].first_name} ${users[0].last_name}`
+                        let slicedName = name.slice(undefined, searchTerm.length)
+                            if(slicedName === searchTerm){
+                                console.log('hit', name)
+                                chatBoolean = true
+                            }
+                    }
+                    return chatBoolean
+                })
+                chatSearchResults = results
             }
-        }
+            console.log(chatSearchResults, chats)
+            if(!!chatSearchResults){
+                if(chatSearchResults.length > 0 && !!current_user){
+                    return chatSearchResults.map((chat, index) => {
+                        let chat_users = chat.users.filter((user) => user._id !== current_user._id)
+                        if(chat._id === chat_id){
+                            return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {chat.messages} focus = {true} onFocus = {onFocus}/>
+                        } else {
+                            return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {chat.messages} focus = {false} onFocus = {onFocus}/>
+                        }
+                    })
+                } else {
+                    return 
+                }
+            }
+        }       
     }
 
 

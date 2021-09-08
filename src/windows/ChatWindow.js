@@ -63,8 +63,8 @@ const ChatWindow = ({chat_id, current_user}) => {
                 let minutes = message.time[1].toString().length === 1 ? `0${message.time[1]}`: `${message.time[1]}`
                 return (
                     <div key = {message._id} className = {`message ${user}`}>
-                        <div>{message.username}: {message.text}</div>
-                        <div>{hours}:{minutes}</div>
+                        <div >{message.username}: {message.text}</div>
+                        <div >{hours}:{minutes}</div>
                     </div>
                 )
                 

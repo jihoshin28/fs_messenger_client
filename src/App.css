@@ -47,14 +47,18 @@ body {
   margin-bottom: 3rem;
 }
 .chat-box > div {
-  width: 100%;
+  margin: 2%;
+  border-radius: 1em;
+  width: 50%;
   padding: 0.5rem 1rem;
 }
 .current-user {
+  justify-content: flex-start;
   background: #fffda0;
 }
 
 .other-user{
+  justify-content: flex-end;
   background: #8ee8ff
 }
 
@@ -236,6 +240,11 @@ body {
 
 .userSearchBar {
 
+}
+
+.chat-section {
+  background-color: rgb(246, 255, 195);
+  height: 50vw;
 }
 
 .create-chat-button {
