@@ -2,19 +2,14 @@ import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import SidebarChat from '../components/SidebarChat'
 
-const Sidebar = ({users, chats, chat_id, current_user, setChat}) => {
+const Sidebar = ({ chats, chat_id, current_user, setChat}) => {
     let [chatSearch, setChatSearch] = useState("")
-
-    useEffect(() => {
-        
-    }, [chatSearch])
 
     let onFocus = (chat_id) => {
         setChat(chat_id)
     }
     
     let renderSidebarChats = () => {
-        console.log(chats)
         let chatSearchResults
         if(chats !== null){
             if(chatSearch === ""){
@@ -47,7 +42,7 @@ const Sidebar = ({users, chats, chat_id, current_user, setChat}) => {
                 })
                 chatSearchResults = results
             }
-            console.log(chatSearchResults, chats)
+            
             if(!!chatSearchResults){
                 if(chatSearchResults.length > 0 && !!current_user){
                     return chatSearchResults.map((chat, index) => {

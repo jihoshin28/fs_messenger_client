@@ -27,12 +27,11 @@ function App() {
   const[chat_id, setChatId] = useState()
   const[loginError, setLoginError] = useState()
   const[signUpError, setSignUpError] = useState()
+  const[chatMessages, setChatMessages]  = useState([])
 
   useEffect(() => {
 
     // On log in: 
-    
-    
     
     // 1) When application starts, grab any local storage state items
     statePersist()
@@ -59,13 +58,6 @@ function App() {
       console.log(data)
     })  
 
-    // socket2.on('connect', () => {
-    //   console.log(socket2.id)
-    // })
-    // socket.on('api connect', (data) => {
-    //     console.log(data)
-    // })  
-    
   }, [])
 
   useEffect(() => {
@@ -90,10 +82,20 @@ function App() {
        let chat_calls = current_user.chats.map((chatId) => {
          return getChat(chatId)
        })
-       console.log(chat_calls)
+
        Promise.all(chat_calls).then((chat_data) => {
          setChats(chat_data)
          window.localStorage.setItem('chats', JSON.stringify(chat_data))
+         let current_chat_messages = () => {
+           let result = {}
+           for(let i = 0; i < chat_data.length; i++){
+             let chat = chat_data[i]
+             result[chat._id] = chat.messages
+           }
+           return result
+         }
+         setChatMessages(current_chat_messages())
+         window.localStorage.setItem('chat_messages', JSON.stringify(current_chat_messages()))
        })
      }
      // once all the promises resolve then set state
@@ -105,12 +107,18 @@ function App() {
 
   // run this effect everytime current_user updates
   let statePersist = () => {
+    setChatMessages(JSON.parse(window.localStorage.getItem('chat_messages')))
     setCurrentUser(JSON.parse(window.localStorage.getItem('current_user')))
     setChats(JSON.parse(window.localStorage.getItem('chats')))
     setChatId(JSON.parse(window.localStorage.getItem('chat_id')))
     setUsers(JSON.parse(window.localStorage.getItem('users')))
   }
  
+  let updateMessages = (newMessages, chat_id) => {
+    let newChatMessages = chatMessages
+    newChatMessages[chat_id] = newMessages
+    setChatMessages(newChatMessages)
+  }
 
   let setChat = (chat_id) => {
     window.localStorage.setItem('chat_id', JSON.stringify(chat_id))
@@ -172,7 +180,6 @@ function App() {
     }
   }
 
-  console.log(users, chats, current_user, 'initial data')
   return (
     <div className="App">
         <Router history = {history}>
@@ -191,7 +198,7 @@ function App() {
               <SignUp error = {signUpError} signUp = {signUp}/>
             </Route>
             <Route exact path="/chat/:chat_id"  >
-              <ChatWindow chat_id = {chat_id} current_user = {current_user}/>
+              <ChatWindow set_messages = {updateMessages} chat_messages = {chatMessages} chat_id = {chat_id} current_user = {current_user}/>
             </Route>
             <Route exact path ="/create_chat">
               <CreateChat users = {users} chats = {chats} setChat = {setChat} setChats = {setChats} current_user = {current_user}/>

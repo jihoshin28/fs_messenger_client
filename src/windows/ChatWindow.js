@@ -2,35 +2,39 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getChat } from '../api'
 import socket from '../socket'
 
-const ChatWindow = ({chat_id, current_user}) => {
+const ChatWindow = ({chat_messages, chat_id, current_user}) => {
 
     let [input, setInput] = useState('')
-    let [messages, setMessages] = useState([])
+    let [messageCount, setMessageCount] = useState(0)
     let ref = useRef()
 
-    
     useEffect(() => {
         socket.on('chat message', (data) => {
-            let newMessages = [...messages, data]
-            setMessages(newMessages)
+            console.log('hit')
+            addMessage(data)
+            setMessageCount(messageCount + 1)
         })
-    })
+        
+    }, [])
 
     useEffect(() => {
-        loadMessages(chat_id)
-        console.log(messages, 'chat room switched')
-    }, [chat_id])
-
-    // function to get the messages in a chat room everytime the user joins
-    let loadMessages = async(chat_id) =>{
-        let current_chat = await getChat(chat_id)
-        if(current_chat !== undefined){
-            if(Object.keys(current_chat).length > 0){
-                let newMessages = current_chat.messages
-                setMessages(newMessages)
+        let getChatData = async() => {
+            let chat_data = await getChat(chat_id)
+            if(!!chat_data){
+                let messages = chat_data.messages
+                setMessageCount(messages.length)
+                console.log(messages)
+                messages.forEach((message) => {
+                    addMessage(message)
+                })
             }
         }
-    }
+        getChatData()
+
+        return () => {
+            clearMessages()
+        }
+    }, [chat_id])
 
     let onChange = (e) => {
         setInput(e.target.value)
@@ -50,41 +54,52 @@ const ChatWindow = ({chat_id, current_user}) => {
             time
 
         }
+
         socket.emit('chat message', message)
         setInput('')
-        window.scrollTo(0, ref.current.scrollHeight);
     }
 
-    let renderMessages = (messages) => {
+    let clearMessages = () => {
+        if(!!ref.current){
+            ref.current.innerHTML = ""
+        }
+    }
+
+    let addMessage = (data) => {
         if(!!current_user){
-            return messages.map((message) => {
-                let user = message.user_id === current_user._id? 'current-user': 'other-user'
-                let hours = message.time[0].toString().length === 1 ? `0${message.time[0]}`: `${message.time[0]}`
-                let minutes = message.time[1].toString().length === 1 ? `0${message.time[1]}`: `${message.time[1]}`
-                return (
-                    <div key = {message._id} className = {`message ${user}`}>
-                        <div >{message.username}: {message.text}</div>
-                        <div >{hours}:{minutes}</div>
-                    </div>
-                )
+            let user = data.user_id === current_user._id ? 'current-user': 'other-user'
+            let messageBox = document.createElement('div')
+            let textDiv = document.createElement('div')
+            let timeStampDiv = document.createElement('div')
+            messageBox.classList.add(user)
+            let hours = data.time[0].toString().length === 1 ? `0${data.time[0]}`: `${data.time[0]}`
+            let minutes = data.time[1].toString().length === 1 ? `0${data.time[1]}`: `${data.time[1]}`
+            textDiv.innerText = `${data.username}: ${data.text}`
+            timeStampDiv.innerText = `${hours}:${minutes}`
+            messageBox.appendChild(textDiv)
+            messageBox.appendChild(timeStampDiv)
+            if(!!ref.current){
+                ref.current.appendChild(messageBox)
+                window.scroll(0, ref.current.scrollHeight)
+            }
+        }
+    }
+
+    let renderChatBox = () => {
+        if(messageCount > 0){
+            return <div ref = {ref} class = "chat-box">
                 
-            })
+            </div>
+        } else {
+            return <div>
+                <h3>No messages yet!</h3>
+            </div>
         }
     }
 
     return (
         <div class = "chat-section">
-            <div ref = {ref} class = "chat-box">
-
-                {messages.length > 0? renderMessages(messages): 
-                    <div className = "container">
-                        <div className = "chat-intro">
-                            <h3>Start chatting!</h3>
-                        </div>
-                    </div>
-                }
-            </div>
-            
+            {renderChatBox()}
             <form id="form" action="" onSubmit = {(e) => sendMessage(e)}>
                 <input value = {input} onChange = {(e) => onChange(e)} id="input" autoComplete="off" /><button>Send</button>
             </form>

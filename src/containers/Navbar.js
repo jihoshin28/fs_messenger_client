@@ -22,7 +22,6 @@ const Navbar = ({logOut, current_user, chat_id, chats}) => {
     }
     
     let renderBanner = () => {
-        console.log(chats)
         let result
         if(!!chat_id && chats !== null){
             if(chats.length > 0){
