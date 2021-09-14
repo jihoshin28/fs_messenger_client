@@ -135,7 +135,7 @@ function App() {
 
   const updateMessages = (chat_id, data) => {
     let newMessages = {...chatMessages}
-    if(!chatMessages[chat_id]){
+    if(!newMessages[chat_id]){
       newMessages[chat_id] = data
     } else {
       let new_messages= chatMessages[chat_id]
@@ -208,7 +208,7 @@ function App() {
               <SignUp error = {signUpError} signUp = {signUp}/>
             </Route>
             <Route exact path="/chat/:chat_id"  >
-              <ChatWindow updateMessages = {updateMessages} chat_id = {chat_id} current_user = {current_user}/>
+              <ChatWindow updateMessages = {updateMessages} messages = {chatMessages[chat_id]} chat_id = {chat_id} current_user = {current_user}/>
             </Route>
             <Route exact path ="/create_chat">
               <CreateChat users = {users} chats = {chats} setChat = {setChat} setChats = {setChats} current_user = {current_user}/>

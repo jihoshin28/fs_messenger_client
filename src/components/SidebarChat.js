@@ -6,16 +6,19 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
     let[recentMessage, setRecentMessage] = useState()
     useEffect(() => {
         console.log(messages, 'sidebar')
-        let recent_message = messages[messages.length - 1]
-        if(!!recent_message){
-            setRecentMessage(messages[messages.length - 1].text)
-        }
-        socket.on('chat message', (data) => {
-            if(data.chat_id === chat_id) {
-                setRecentMessage(data.text)
+        if(!!messages && messages.length > 0){
+
+            let recent_message = messages[messages.length - 1]
+            if(!!recent_message){
+                setRecentMessage(messages[messages.length - 1].text)
             }
-        })
-        
+            socket.on('chat message', (data) => {
+                if(data.chat_id === chat_id) {
+                    setRecentMessage(data.text)
+                }
+            })
+            
+        }
     }, [])
 
     useEffect(() => {

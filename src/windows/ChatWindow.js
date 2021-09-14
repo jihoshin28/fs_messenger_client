@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from 'react';
-import { getChat } from '../api'
 import socket from '../socket'
 
-const ChatWindow = ({updateMessages, chat_id, current_user}) => {
+const ChatWindow = ({updateMessages, messages, chat_id, current_user}) => {
 
+    let [loading, setLoading] = useState(true)
     let [input, setInput] = useState('')
     let [messageCount, setMessageCount] = useState(0)
     let ref = useRef()
@@ -11,29 +11,31 @@ const ChatWindow = ({updateMessages, chat_id, current_user}) => {
     useEffect(() => {
         socket.on('chat message', (data) => {
             updateMessages(chat_id, data)
-            // addMessage(data)
-            // setMessageCount(messageCount + 1)
+            addMessage(data)
+            setMessageCount(messageCount + 1)
         })
         
     }, [])
 
     useEffect(() => {
-        let getChatData = async() => {
-            let chat_data = await getChat(chat_id)
-            if(!!chat_data){
-                let messages = chat_data.messages
+        if(!!messages){
+           
+
+            if(messages.length > 0){
                 setMessageCount(messages.length)
                 messages.forEach((message) => {
                     addMessage(message)
                 })
+            } else {
+                setMessageCount(0)
             }
         }
-        getChatData()
 
         return () => {
             clearMessages()
         }
-    }, [chat_id])
+    }, [chat_id, messages])
+
 
     let onChange = (e) => {
         setInput(e.target.value)
@@ -85,20 +87,16 @@ const ChatWindow = ({updateMessages, chat_id, current_user}) => {
     }
 
     let renderChatBox = () => {
-        if(messageCount > 0){
-            return <div ref = {ref} class = "chat-box">
-                
-            </div>
-        } else {
-            return <div>
-                <h3>No messages yet!</h3>
-            </div>
+        if(!!messages){
+            if(messages.length > 0){
+                return <div ref = {ref} class = "chat-box"></div>
+            }
         }
     }
-
+    console.log(messageCount)
     return (
         <div class = "chat-section">
-            {renderChatBox()}
+            {messages.length > 0? renderChatBox(): <h2>No messages yet</h2>}
             <form id="form" action="" onSubmit = {(e) => sendMessage(e)}>
                 <input value = {input} onChange = {(e) => onChange(e)} id="input" autoComplete="off" /><button>Send</button>
             </form>
