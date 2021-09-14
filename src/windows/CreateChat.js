@@ -29,28 +29,32 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
         } else {
             setChatUserIds([...chatUserIds, user._id])
             setSelectedUsers([...selectedUsers, user])
-            setUserSearch(' ')
+            setUserSearch('')
         }
     }
 
     let createChat = async() => {
-        let result = await createNewChat(chatUserIds)
-        console.log(result)
-        getChat(result.data.newChat._id).then((new_chat) => {
-            console.log(new_chat)
-            if(!chats){
-                setChats([new_chat])
-                window.localStorage.setItem('chats', JSON.stringify([new_chat]))
-            } else {
-                window.localStorage.setItem('chats', JSON.stringify([...chats, new_chat]))
-                setChats([...chats, new_chat])
-            }
-            socket.emit('created room', new_chat)
-        })
-        
-        current_user.chats = [...current_user.chats, result.data.newChat._id]
-        window.localStorage.setItem('current_user', JSON.stringify(current_user))
-        setChat(result.data.newChat._id)
+        if(chatUserIds.length >= 2){
+            let result = await createNewChat(chatUserIds)
+            console.log(result)
+            getChat(result.data.newChat._id).then((new_chat) => {
+                console.log(new_chat)
+                if(!chats){
+                    setChats([new_chat])
+                    window.localStorage.setItem('chats', JSON.stringify([new_chat]))
+                } else {
+                    window.localStorage.setItem('chats', JSON.stringify([...chats, new_chat]))
+                    setChats([...chats, new_chat])
+                }
+                socket.emit('created room', new_chat)
+            })
+            
+            current_user.chats = [...current_user.chats, result.data.newChat._id]
+            window.localStorage.setItem('current_user', JSON.stringify(current_user))
+            setChat(result.data.newChat._id)
+        } else {
+            alert('Please add some users to chat with')
+        }
         setChatUserIds([])
 
     }
@@ -151,7 +155,7 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="inputGroup-sizing-default">Search Users</span>
                         <div class="dropdown" style = {{width: '75%'}}>
-                            <input onChange = {(e) => setUserSearch(e.target.value)} class="form-control me-2" type="search" placeholder="Search Users" aria-label="Search"/>
+                            <input onChange = {(e) => setUserSearch(e.target.value)} value = {userSearch} class="form-control me-2" type="search" placeholder="Search Users" aria-label="Search"/>
                             <ul class= {`dropdown-menu ${showDropdown()}`} aria-labelledby="dropdownMenu2">
                                 {renderUserSearch(userSearch)}
                             </ul>
