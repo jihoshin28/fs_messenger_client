@@ -39,7 +39,7 @@ function App() {
     // 2) get all Users
 
     // if current user exists, emit login event
-  
+    console.log(chatMessages)
     //set up socket listeners 
     socket.on('rooms',(data) => {
       console.log(data)
@@ -58,13 +58,16 @@ function App() {
       console.log(data)
     })  
 
+    socket.on('created room', (data) => {
+      updateMessages(data._id, [])
+    })
+
   }, [])
 
   useEffect(() => {
     // 3) get all the chats with chat_ids in the user chats array, if current user exists
     console.log('current user changed')
     getUsers().then((users)=> {
-      console.log(users)
       window.localStorage.setItem('users', JSON.stringify(users.data))
       setUsers(users.data)
     })
@@ -106,26 +109,20 @@ function App() {
  }, [current_user])
 
   // run this effect everytime current_user updates
-  let statePersist = () => {
+  const statePersist = () => {
     setChatMessages(JSON.parse(window.localStorage.getItem('chat_messages')))
     setCurrentUser(JSON.parse(window.localStorage.getItem('current_user')))
     setChats(JSON.parse(window.localStorage.getItem('chats')))
     setChatId(JSON.parse(window.localStorage.getItem('chat_id')))
     setUsers(JSON.parse(window.localStorage.getItem('users')))
   }
- 
-  let updateMessages = (newMessages, chat_id) => {
-    let newChatMessages = chatMessages
-    newChatMessages[chat_id] = newMessages
-    setChatMessages(newChatMessages)
-  }
 
-  let setChat = (chat_id) => {
+  const setChat = (chat_id) => {
     window.localStorage.setItem('chat_id', JSON.stringify(chat_id))
     setChatId(chat_id)
   }
 
-  let logOut = () => {
+  const logOut = () => {
     window.localStorage.setItem('current_user', JSON.stringify(null))
     setCurrentUser(null)
     window.localStorage.setItem('chats', JSON.stringify(null))
@@ -136,7 +133,20 @@ function App() {
     setUsers(null)
   }
 
-  let redirectPaths= () => {
+  const updateMessages = (chat_id, data) => {
+    let newMessages = {...chatMessages}
+    if(!chatMessages[chat_id]){
+      newMessages[chat_id] = data
+    } else {
+      let new_messages= chatMessages[chat_id]
+      new_messages.push(data)
+      newMessages[chat_id] = new_messages
+    }
+    setChatMessages(newMessages)
+    window.localStorage.setItem('chat_messages', JSON.stringify(newMessages))
+  }
+
+  const redirectPaths = () => {
     // if there is no user id then redirect to login
     if(!current_user){
       return <Redirect to = {{pathname: `/login`}}/>
@@ -153,7 +163,7 @@ function App() {
     }
   }
 
-  let login = async(email, password) => {
+  const login = async(email, password) => {
     // set the current user using this function sent down to the login form
     // use the api to confirm that the password and username match
     let result = await apiLogin(email, password)
@@ -167,7 +177,7 @@ function App() {
   
   }
 
-  let signUp = async(userInfo) => {
+  const signUp = async(userInfo) => {
     userInfo['first_name'] = userInfo['first_name'][0].toUpperCase() + userInfo['first_name'].slice(1, userInfo['first_name'].length).toLowerCase()
     userInfo['last_name'] = userInfo['last_name'][0].toUpperCase() + userInfo['last_name'].slice(1, userInfo['first_name'].length).toLowerCase()
 
@@ -184,7 +194,7 @@ function App() {
     <div className="App">
         <Router history = {history}>
         {redirectPaths()}
-        <Sidebar users = {users} current_user = {current_user} chats = {chats} chat_id = {chat_id} setChat = {setChat}/>
+        <Sidebar users = {users} chat_messages = {chatMessages} current_user = {current_user} chats = {chats} chat_id = {chat_id} setChat = {setChat}/>
         <div class = 'chat-window'>
           <Navbar chats = {chats} logOut = {logOut} chat_id = {chat_id} current_user = {current_user}/>
           <Switch>
@@ -198,7 +208,7 @@ function App() {
               <SignUp error = {signUpError} signUp = {signUp}/>
             </Route>
             <Route exact path="/chat/:chat_id"  >
-              <ChatWindow set_messages = {updateMessages} chat_messages = {chatMessages} chat_id = {chat_id} current_user = {current_user}/>
+              <ChatWindow updateMessages = {updateMessages} chat_id = {chat_id} current_user = {current_user}/>
             </Route>
             <Route exact path ="/create_chat">
               <CreateChat users = {users} chats = {chats} setChat = {setChat} setChats = {setChats} current_user = {current_user}/>

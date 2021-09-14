@@ -2,7 +2,7 @@ import React, { useState, useEffect, useRef } from 'react';
 import { getChat } from '../api'
 import socket from '../socket'
 
-const ChatWindow = ({chat_messages, chat_id, current_user}) => {
+const ChatWindow = ({updateMessages, chat_id, current_user}) => {
 
     let [input, setInput] = useState('')
     let [messageCount, setMessageCount] = useState(0)
@@ -10,9 +10,9 @@ const ChatWindow = ({chat_messages, chat_id, current_user}) => {
 
     useEffect(() => {
         socket.on('chat message', (data) => {
-            console.log('hit')
-            addMessage(data)
-            setMessageCount(messageCount + 1)
+            updateMessages(chat_id, data)
+            // addMessage(data)
+            // setMessageCount(messageCount + 1)
         })
         
     }, [])
@@ -23,7 +23,6 @@ const ChatWindow = ({chat_messages, chat_id, current_user}) => {
             if(!!chat_data){
                 let messages = chat_data.messages
                 setMessageCount(messages.length)
-                console.log(messages)
                 messages.forEach((message) => {
                     addMessage(message)
                 })

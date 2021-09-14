@@ -29,12 +29,13 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
         } else {
             setChatUserIds([...chatUserIds, user._id])
             setSelectedUsers([...selectedUsers, user])
+            setUserSearch(' ')
         }
     }
 
     let createChat = async() => {
         let result = await createNewChat(chatUserIds)
-        
+
         getChat(result.data.newChat._id).then((new_chat) => {
             if(!chats){
                 setChats([new_chat])
@@ -43,9 +44,9 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
                 window.localStorage.setItem('chats', JSON.stringify([...chats, new_chat]))
                 setChats([...chats, new_chat])
             }
-
+            socket.emit('created room', new_chat)
         })
-        socket.emit('created room', {'newChat': result.data.newChat})
+        
         current_user.chats = [...current_user.chats, result.data.newChat._id]
         window.localStorage.setItem('current_user', JSON.stringify(current_user))
         setChat(result.data.newChat._id)
