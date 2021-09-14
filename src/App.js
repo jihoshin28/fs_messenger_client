@@ -167,7 +167,7 @@ function App() {
   }
 
   const getChatMessages = (chat_id) => {
-    if(!!chat_id && !!chatMessages){
+    if(!!chatMessages){
       return chatMessages[chat_id]
     }
   }
