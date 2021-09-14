@@ -53,6 +53,7 @@ const Sidebar = ({ chats, chat_messages, chat_id, current_user, setChat}) => {
                 if(chatSearchResults.length > 0 && !!current_user){
                     return chatSearchResults.map((chat, index) => {
                         let chat_users = chat.users.filter((user) => user._id !== current_user._id)
+                        let chat_messages = getChatMessages(chat._id)
                         if(chat._id === chat_id){
                             return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {getChatMessages(chat._id)} focus = {true} onFocus = {onFocus}/>
                         } else {

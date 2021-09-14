@@ -143,6 +143,7 @@ function App() {
     } else {
       let new_messages= chatMessages[chat_id]
       new_messages.push(data)
+      console.log(new_messages, "PUSHED", data)
       newMessages[chat_id] = new_messages
     }
     setChatMessages(newMessages)

@@ -5,10 +5,10 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
     let ref = React.useRef()
     let[recentMessage, setRecentMessage] = useState()
     useEffect(() => {
-        console.log(messages, 'sidebar')
         if(!!messages && messages.length > 0){
 
             let recent_message = messages[messages.length - 1]
+            console.log(messages, recent_message)
             if(!!recent_message){
                 setRecentMessage(messages[messages.length - 1].text)
             }
@@ -19,7 +19,7 @@ const SidebarChat = ({chat_id, users, messages, focus, onFocus}) => {
             })
             
         }
-    }, [])
+    }, [chat_id])
 
     useEffect(() => {
         if(focus === true){

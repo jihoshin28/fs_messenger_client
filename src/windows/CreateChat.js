@@ -2,7 +2,7 @@ import React,{useState, useEffect} from 'react'
 import { createNewChat, getChat } from '../api'
 import socket from '../socket';
 
-const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
+const CreateChat = ({ users, chats, setChats, setChat, current_user}) => {
     let [chatUserIds, setChatUserIds] = useState([])
     let [selectedUsers, setSelectedUsers] = useState([])
     let [userSearch, setUserSearch] = useState("")
@@ -34,21 +34,23 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
     }
 
     let createChat = async() => {
-        if(chatUserIds.length >= 2){
+        console.log(chatUserIds)
+        if(chatUserIds.length >= 1){
             let result = await createNewChat(chatUserIds)
             console.log(result)
             getChat(result.data.newChat._id).then((new_chat) => {
                 console.log(new_chat)
-                if(!chats){
-                    setChats([new_chat])
-                    window.localStorage.setItem('chats', JSON.stringify([new_chat]))
-                } else {
-                    window.localStorage.setItem('chats', JSON.stringify([...chats, new_chat]))
-                    setChats([...chats, new_chat])
+                if(!!new_chat){
+                    if(!chats){
+                        setChats([new_chat])
+                        window.localStorage.setItem('chats', JSON.stringify([new_chat]))
+                    } else {
+                        window.localStorage.setItem('chats', JSON.stringify([...chats, new_chat]))
+                        setChats([...chats, new_chat])
+                    }
+                    socket.emit('created room', new_chat)
                 }
-                socket.emit('created room', new_chat)
             })
-            
             current_user.chats = [...current_user.chats, result.data.newChat._id]
             window.localStorage.setItem('current_user', JSON.stringify(current_user))
             setChat(result.data.newChat._id)
@@ -166,7 +168,7 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
                             Create Chat
                         </button>
                     </div>
-                    <div class = "card">
+                   <div class = "card">
                         {renderUsersList()}
                         {
                             userCount < users.length? 

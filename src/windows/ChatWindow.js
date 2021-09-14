@@ -9,14 +9,12 @@ const ChatWindow = ({updateMessages, messages, chat_id, current_user}) => {
 
     useEffect(() => {
         socket.on('chat message', (data) => {
-            updateMessages(chat_id, data)
-            addMessage(data)
-            setMessageCount(messageCount + 1)
+            if(data.chat_id === chat_id){
+                addMessage(data)
+                setMessageCount(messageCount + 1)
+                updateMessages(chat_id, data)
+            }
         })
-        
-    }, [])
-
-    useEffect(() => {
         if(!!messages){
             if(messages.length > 0){
                 setMessageCount(messages.length)
@@ -81,6 +79,7 @@ const ChatWindow = ({updateMessages, messages, chat_id, current_user}) => {
                 window.scroll(0, ref.current.scrollHeight)
             }
         }
+
     }
 
     let renderChatBox = () => {
