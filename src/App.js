@@ -57,7 +57,8 @@ function App() {
     socket.on('notification', (data) => {
       console.log(data)
     })  
-
+    
+    //socket listener for creating a room with the user
     socket.on('created room', (data) => {
       updateMessages(data._id, [])
     })
@@ -131,6 +132,8 @@ function App() {
     setChatId(null)
     window.localStorage.setItem('users', JSON.stringify(null))
     setUsers(null)
+    window.localStorage.setItem('chat_messages', JSON.stringify(null))
+    setChatMessages(null)
   }
 
   const updateMessages = (chat_id, data) => {
@@ -160,6 +163,12 @@ function App() {
       } else {
         return <Redirect to = {{pathname: `/`}}/>
       }
+    }
+  }
+
+  const getChatMessages = (chat_id) => {
+    if(!!chat_id && !!chatMessages){
+      return chatMessages[chat_id]
     }
   }
 
@@ -208,7 +217,7 @@ function App() {
               <SignUp error = {signUpError} signUp = {signUp}/>
             </Route>
             <Route exact path="/chat/:chat_id"  >
-              <ChatWindow updateMessages = {updateMessages} messages = {chatMessages[chat_id]} chat_id = {chat_id} current_user = {current_user}/>
+              <ChatWindow updateMessages = {updateMessages} messages = {getChatMessages(chat_id)} chat_id = {chat_id} current_user = {current_user}/>
             </Route>
             <Route exact path ="/create_chat">
               <CreateChat users = {users} chats = {chats} setChat = {setChat} setChats = {setChats} current_user = {current_user}/>

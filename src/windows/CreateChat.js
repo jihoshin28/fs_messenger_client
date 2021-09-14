@@ -35,8 +35,9 @@ const CreateChat = ({users, chats, setChats, setChat, current_user}) => {
 
     let createChat = async() => {
         let result = await createNewChat(chatUserIds)
-
+        console.log(result)
         getChat(result.data.newChat._id).then((new_chat) => {
+            console.log(new_chat)
             if(!chats){
                 setChats([new_chat])
                 window.localStorage.setItem('chats', JSON.stringify([new_chat]))

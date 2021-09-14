@@ -9,6 +9,12 @@ const Sidebar = ({ chats, chat_messages, chat_id, current_user, setChat}) => {
         setChat(chat_id)
     }
     
+    let getChatMessages = (chat_id) => {
+        if(!!chat_id && !!chat_messages){
+            return chat_messages[chat_id]
+        }
+    }
+
     let renderSidebarChats = () => {
         let chatSearchResults
         if(chats !== null){
@@ -48,9 +54,9 @@ const Sidebar = ({ chats, chat_messages, chat_id, current_user, setChat}) => {
                     return chatSearchResults.map((chat, index) => {
                         let chat_users = chat.users.filter((user) => user._id !== current_user._id)
                         if(chat._id === chat_id){
-                            return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {chat_messages[chat._id]} focus = {true} onFocus = {onFocus}/>
+                            return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {getChatMessages(chat._id)} focus = {true} onFocus = {onFocus}/>
                         } else {
-                            return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {chat_messages[chat._id]} focus = {false} onFocus = {onFocus}/>
+                            return <SidebarChat key = {index} chat_id = {chat._id} users = {chat_users} messages = {getChatMessages(chat._id)} focus = {false} onFocus = {onFocus}/>
                         }
                     })
                 } else {
